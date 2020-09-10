@@ -24,7 +24,6 @@
     "require-dev": {
         "infection/infection": "^0.17.0",
         "phpunit/phpunit": "^9.3",
-        "nyholm/psr7": "^1.0",
         "vimeo/psalm": "^3.15"
     },
     "autoload": {

@@ -29,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiisoft\\AuthJwt\\": "src"
+            "Yiisoft\\Auth\\Jwt\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiisoft\\AuthJwt\\Tests\\": "tests"
+            "Yiisoft\\Auth\\Jwt\\Tests\\": "tests"
         }
     },
     "extra": {

@@ -30,7 +30,9 @@ class TokenManagerTest extends TestCase
     {
         $payload = $this->getPayload();
         $token = $this->tokenManager->createToken($payload);
-        $this->assertSame($payload, $this->tokenManager->getClaims($token));
+        $claims = $this->tokenManager->getClaims($token);
+        $this->assertSame($payload, $claims);
+        $this->assertEquals($claims['sub'], $payload['sub']);
     }
 
     private function getPayload(): array

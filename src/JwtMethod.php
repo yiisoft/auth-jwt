@@ -35,7 +35,7 @@ final class JwtMethod implements AuthenticationMethodInterface
         $token = $this->getAuthenticationToken($request);
         $claims = $this->tokenManager->getClaims($token);
 
-        if (isset($claims[$this->identifier])) {
+        if ($claims !== null && isset($claims[$this->identifier])) {
             return $this->identityRepository->findIdentity($claims[$this->identifier]);
         }
         return null;

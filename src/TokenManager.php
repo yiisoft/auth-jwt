@@ -45,7 +45,7 @@ final class TokenManager implements TokenManagerInterface
         return $this->serializer->serialize($jws->build());
     }
 
-    public function getClaims(string $token): array
+    public function getClaims(string $token): ?array
     {
         $jwk = $this->createKey();
         $jws = $this->serializer->unserialize($token);
@@ -57,7 +57,7 @@ final class TokenManager implements TokenManagerInterface
         if ($isVerified) {
             return Json::decode($jws->getPayload());
         }
-        return [];
+        return null;
     }
 
     private function createKey(): JWK

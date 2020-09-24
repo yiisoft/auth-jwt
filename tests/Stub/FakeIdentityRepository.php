@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Auth\Jwt\Tests\Stub;
 
-use Yiisoft\Auth\IdentityRepositoryInterface;
 use Yiisoft\Auth\IdentityInterface;
+use Yiisoft\Auth\IdentityRepositoryInterface;
 
 final class FakeIdentityRepository implements IdentityRepositoryInterface
 {

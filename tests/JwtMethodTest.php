@@ -33,6 +33,28 @@ class JwtMethodTest extends TestCase
         $this->assertEquals('123', $result->getId());
     }
 
+    private function createIdentity(?string $id = '123'): IdentityInterface
+    {
+        return new FakeIdentity($id);
+    }
+
+    private function getPayload(): array
+    {
+        return [
+            'iat' => time(),
+            'nbf' => time(),
+            'exp' => time() + 3600,
+            'sub' => 123,
+            'iss' => 'Yii Framework',
+            'aud' => 'Yii 3',
+        ];
+    }
+
+    private function createRequest(array $headers = []): ServerRequestInterface
+    {
+        return new ServerRequest(Method::GET, '/', $headers);
+    }
+
     public function testUnSuccessfulAuthentication(): void
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));
@@ -57,27 +79,5 @@ class JwtMethodTest extends TestCase
         (new JwtMethod($identityRepository, $tokenManager))->authenticate(
             $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
         );
-    }
-
-    private function createIdentity(?string $id = '123'): IdentityInterface
-    {
-        return new FakeIdentity($id);
-    }
-
-    private function createRequest(array $headers = []): ServerRequestInterface
-    {
-        return new ServerRequest(Method::GET, '/', $headers);
-    }
-
-    private function getPayload(): array
-    {
-        return [
-            'iat' => time(),
-            'nbf' => time(),
-            'exp' => time() + 3600,
-            'sub' => 123,
-            'iss' => 'Yii Framework',
-            'aud' => 'Yii 3',
-        ];
     }
 }

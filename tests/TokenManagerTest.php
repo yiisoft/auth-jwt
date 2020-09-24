@@ -13,9 +13,9 @@ class TokenManagerTest extends TestCase
     private const SECRET = 'dsgsdgr45t3eEF$G3G$3gee44tdsSagsdgGDsdLsadfaGsSfGDgEGEgsgrbswg344wgv34b5sdy67sdS';
     private TokenManagerInterface $tokenManager;
 
-    public function __construct()
+    protected function setUp():void
     {
-        parent::__construct();
+        parent::setUp();
         $this->tokenManager = new TokenManager(self::SECRET);
     }
 

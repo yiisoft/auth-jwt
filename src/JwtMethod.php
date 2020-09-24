@@ -25,7 +25,7 @@ final class JwtMethod implements AuthenticationMethodInterface
     private string $identifier = 'sub';
     private IdentityRepositoryInterface $identityRepository;
     private TokenManagerInterface $tokenManager;
-    private ?array $claimCheckers = null;
+    private ?array $claimCheckers;
 
     public function __construct(
         IdentityRepositoryInterface $identityRepository,
@@ -45,10 +45,9 @@ final class JwtMethod implements AuthenticationMethodInterface
         }
 
         $claims = $this->tokenManager->getClaims($token);
-        $this->getClaimChecker()->check($claims);
-
         if ($claims !== null && isset($claims[$this->identifier])) {
-            return $this->identityRepository->findIdentity($claims[$this->identifier]);
+            $this->getClaimChecker()->check($claims);
+            return $this->identityRepository->findIdentity((string)$claims[$this->identifier]);
         }
         return null;
     }

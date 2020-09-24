@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Auth\Jwt;
 
+use Jose\Component\Checker\ClaimCheckerManager;
+use Jose\Component\Checker\ExpirationTimeChecker;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Yiisoft\Auth\AuthenticationMethodInterface;
@@ -23,17 +25,27 @@ final class JwtMethod implements AuthenticationMethodInterface
     private string $identifier = 'sub';
     private IdentityRepositoryInterface $identityRepository;
     private TokenManagerInterface $tokenManager;
+    private ?array $claimCheckers = null;
 
-    public function __construct(IdentityRepositoryInterface $identityRepository, TokenManagerInterface $tokenManager)
-    {
+    public function __construct(
+        IdentityRepositoryInterface $identityRepository,
+        TokenManagerInterface $tokenManager,
+        ?array $claimCheckers = null
+    ) {
         $this->identityRepository = $identityRepository;
         $this->tokenManager = $tokenManager;
+        $this->claimCheckers = $claimCheckers ?? [new ExpirationTimeChecker()];
     }
 
     public function authenticate(ServerRequestInterface $request): ?IdentityInterface
     {
         $token = $this->getAuthenticationToken($request);
+        if ($token === null) {
+            return null;
+        }
+
         $claims = $this->tokenManager->getClaims($token);
+        $this->getClaimChecker()->check($claims);
 
         if ($claims !== null && isset($claims[$this->identifier])) {
             return $this->identityRepository->findIdentity($claims[$this->identifier]);
@@ -115,5 +127,10 @@ final class JwtMethod implements AuthenticationMethodInterface
         }
 
         return $request->getQueryParams()[$this->queryParamName] ?? null;
+    }
+
+    private function getClaimChecker(): ClaimCheckerManager
+    {
+        return new ClaimCheckerManager($this->claimCheckers);
     }
 }

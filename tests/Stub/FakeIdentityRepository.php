@@ -25,5 +25,4 @@ final class FakeIdentityRepository implements IdentityRepositoryInterface
     {
         return $this->returnIdentity;
     }
-
 }

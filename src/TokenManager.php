@@ -11,19 +11,19 @@ use Jose\Component\Signature\Algorithm\HS256;
 use Jose\Component\Signature\JWSBuilder;
 use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\CompactSerializer;
-use Jose\Component\Signature\Serializer\Serializer;
+use Jose\Component\Signature\Serializer\JWSSerializer;
 use Yiisoft\Json\Json;
 
 final class TokenManager implements TokenManagerInterface
 {
     private string $secret;
     private array $algorithms;
-    private Serializer $serializer;
+    private JWSSerializer $serializer;
 
     public function __construct(
         string $secret,
         ?array $algorithms = null,
-        ?Serializer $serializer = null
+        ?JWSSerializer $serializer = null
     ) {
         $this->secret = $secret;
         $this->algorithms = $algorithms ?? [new HS256()];
@@ -57,6 +57,27 @@ final class TokenManager implements TokenManagerInterface
             return Json::decode($jws->getPayload());
         }
         return null;
+    }
+
+    public function withSecret(string $secret): self
+    {
+        $new = clone $this;
+        $new->secret = $secret;
+        return $new;
+    }
+
+    public function withAlgorithms(array $algorithms): self
+    {
+        $new = clone $this;
+        $new->algorithms = $algorithms;
+        return $new;
+    }
+
+    public function withSerializer(JWSSerializer $serializer): self
+    {
+        $new = clone $this;
+        $new->serializer = $serializer;
+        return $new;
     }
 
     private function createKey(): JWK

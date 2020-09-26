@@ -89,7 +89,7 @@ class JwtMethodTest extends TestCase
         $original = new JwtMethod($identityRepository, $this->getTokenManager());
         $this->assertNotSame($original, $original->withHeaderName('headerName'));
         $this->assertNotSame($original, $original->withIdentifier('id'));
-        $this->assertNotSame($original, $original->withQueryParamName('token'));
+        $this->assertNotSame($original, $original->withQueryParameterName('token'));
         $this->assertNotSame($original, $original->withRealm('gateway'));
         $this->assertNotSame($original, $original->withHeaderTokenPattern('pattern'));
     }

@@ -8,6 +8,7 @@ use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Core\JWK;
 use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Signature\Algorithm\HS256;
+use Jose\Component\Signature\JWS;
 use Jose\Component\Signature\JWSBuilder;
 use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\CompactSerializer;
@@ -48,15 +49,12 @@ final class TokenManager implements TokenManagerInterface
     {
         $jwk = $this->createKey();
         $jws = $this->serializer->unserialize($token);
-        $algorithmManager = new AlgorithmManager($this->algorithms);
 
-        $jwsVerifier = new JWSVerifier($algorithmManager);
-        $isVerified = $jwsVerifier->verifyWithKey($jws, $jwk, 0);
-
-        if ($isVerified && $jws->getPayload() !== null) {
-            return Json::decode($jws->getPayload());
+        $isVerified = $this->verifyToken($jws, $jwk);
+        if (!$isVerified || $jws->getPayload() === null) {
+            return null;
         }
-        return null;
+        return Json::decode($jws->getPayload());
     }
 
     public function withSecret(string $secret): self
@@ -83,5 +81,13 @@ final class TokenManager implements TokenManagerInterface
     private function createKey(): JWK
     {
         return JWKFactory::createFromSecret($this->secret);
+    }
+
+    private function verifyToken(JWS $jws, JWK $jwk, int $signature = 0): bool
+    {
+        $algorithmManager = new AlgorithmManager($this->algorithms);
+        $jwsVerifier = new JWSVerifier($algorithmManager);
+
+        return $jwsVerifier->verifyWithKey($jws, $jwk, $signature);
     }
 }

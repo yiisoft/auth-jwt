@@ -37,13 +37,21 @@ class TokenManagerTest extends TestCase
         $this->assertEquals($claims['sub'], $payload['sub']);
     }
 
+    public function testEmptyPayload(): void
+    {
+        $payload = [];
+        $token = $this->tokenManager->createToken($payload);
+        $claims = $this->tokenManager->getClaims($token);
+        $this->assertEmpty($claims);
+    }
+
     public function testImmutability(): void
     {
-        $orginal = new TokenManager(self::SECRET);
+        $original = new TokenManager(self::SECRET);
 
-        $this->assertNotSame($orginal, $orginal->withAlgorithms([new ES256()]));
-        $this->assertNotSame($orginal, $orginal->withSecret('another-secret'));
-        $this->assertNotSame($orginal, $orginal->withSerializer(new JSONGeneralSerializer()));
+        $this->assertNotSame($original, $original->withAlgorithms([new ES256()]));
+        $this->assertNotSame($original, $original->withSecret('another-secret'));
+        $this->assertNotSame($original, $original->withSerializer(new JSONGeneralSerializer()));
     }
 
     private function getPayload(): array

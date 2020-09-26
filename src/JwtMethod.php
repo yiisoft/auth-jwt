@@ -19,7 +19,7 @@ use Yiisoft\Http\Header;
 final class JwtMethod implements AuthenticationMethodInterface
 {
     private string $headerName = Header::AUTHORIZATION;
-    private string $queryParamName = 'access-token';
+    private string $queryParameterName = 'access-token';
     private string $headerTokenPattern = '/^Bearer\s+(.*?)$/';
     private string $realm = 'api';
     private string $identifier = 'sub';
@@ -49,6 +49,7 @@ final class JwtMethod implements AuthenticationMethodInterface
             $this->getClaimCheckerManager()->check($claims);
             return $this->identityRepository->findIdentity((string)$claims[$this->identifier]);
         }
+
         return null;
     }
 
@@ -56,14 +57,11 @@ final class JwtMethod implements AuthenticationMethodInterface
     {
         $authHeaders = $request->getHeader($this->headerName);
         $authHeader = \reset($authHeaders);
-        if (!empty($authHeader)) {
-            if (preg_match($this->headerTokenPattern, $authHeader, $matches)) {
-                return $matches[1];
-            }
-            return null;
+        if (!empty($authHeader) && preg_match($this->headerTokenPattern, $authHeader, $matches)) {
+            return $matches[1];
         }
 
-        return $request->getQueryParams()[$this->queryParamName] ?? null;
+        return $request->getQueryParams()[$this->queryParameterName] ?? null;
     }
 
     private function getClaimCheckerManager(): ClaimCheckerManager
@@ -110,13 +108,13 @@ final class JwtMethod implements AuthenticationMethodInterface
     }
 
     /**
-     * @param string $queryParamName
+     * @param string $queryParameterName
      * @return self
      */
-    public function withQueryParamName(string $queryParamName): self
+    public function withQueryParameterName(string $queryParameterName): self
     {
         $new = clone $this;
-        $new->queryParamName = $queryParamName;
+        $new->queryParameterName = $queryParameterName;
         return $new;
     }
 

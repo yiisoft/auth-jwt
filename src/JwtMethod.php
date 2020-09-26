@@ -23,7 +23,7 @@ final class JwtMethod implements AuthenticationMethodInterface
     private string $headerTokenPattern = '/^Bearer\s+(.*?)$/';
     private string $realm = 'api';
     private string $identifier = 'sub';
-    private ?array $claimCheckers;
+    private array $claimCheckers;
     private IdentityRepositoryInterface $identityRepository;
     private TokenManagerInterface $tokenManager;
 
@@ -46,7 +46,7 @@ final class JwtMethod implements AuthenticationMethodInterface
 
         $claims = $this->tokenManager->getClaims($token);
         if ($claims !== null && isset($claims[$this->identifier])) {
-            $this->getClaimChecker()->check($claims);
+            $this->getClaimCheckerManager()->check($claims);
             return $this->identityRepository->findIdentity((string)$claims[$this->identifier]);
         }
         return null;
@@ -66,7 +66,7 @@ final class JwtMethod implements AuthenticationMethodInterface
         return $request->getQueryParams()[$this->queryParamName] ?? null;
     }
 
-    private function getClaimChecker(): ClaimCheckerManager
+    private function getClaimCheckerManager(): ClaimCheckerManager
     {
         return new ClaimCheckerManager($this->claimCheckers);
     }

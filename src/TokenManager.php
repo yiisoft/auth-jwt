@@ -53,7 +53,7 @@ final class TokenManager implements TokenManagerInterface
         $jwsVerifier = new JWSVerifier($algorithmManager);
         $isVerified = $jwsVerifier->verifyWithKey($jws, $jwk, 0);
 
-        if ($isVerified) {
+        if ($isVerified && $jws->getPayload() !== null) {
             return Json::decode($jws->getPayload());
         }
         return null;

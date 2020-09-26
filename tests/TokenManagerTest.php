@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Auth\Jwt\Tests;
 
+use Jose\Component\Signature\Algorithm\ES256;
+use Jose\Component\Signature\Serializer\JSONGeneralSerializer;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Auth\Jwt\TokenManager;
 use Yiisoft\Auth\Jwt\TokenManagerInterface;
@@ -13,11 +15,35 @@ class TokenManagerTest extends TestCase
     private const SECRET = 'dsgsdgr45t3eEF$G3G$3gee44tdsSagsdgGDsdLsadfaGsSfGDgEGEgsgrbswg344wgv34b5sdy67sdS';
     private TokenManagerInterface $tokenManager;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->tokenManager = new TokenManager(self::SECRET);
+    }
+
     public function testCreateToken(): void
     {
         $payload = $this->getPayload();
         $token = $this->tokenManager->createToken($payload);
         $this->assertIsString($token);
+    }
+
+    public function testGetClaims(): void
+    {
+        $payload = $this->getPayload();
+        $token = $this->tokenManager->createToken($payload);
+        $claims = $this->tokenManager->getClaims($token);
+        $this->assertSame($payload, $claims);
+        $this->assertEquals($claims['sub'], $payload['sub']);
+    }
+
+    public function testImmutability(): void
+    {
+        $orginal = new TokenManager(self::SECRET);
+
+        $this->assertNotSame($orginal, $orginal->withAlgorithms([new ES256()]));
+        $this->assertNotSame($orginal, $orginal->withSecret('another-secret'));
+        $this->assertNotSame($orginal, $orginal->withSerializer(new JSONGeneralSerializer()));
     }
 
     private function getPayload(): array
@@ -30,20 +56,5 @@ class TokenManagerTest extends TestCase
             'iss' => 'Yii Framework',
             'aud' => 'Yii 3',
         ];
-    }
-
-    public function testGetClaims(): void
-    {
-        $payload = $this->getPayload();
-        $token = $this->tokenManager->createToken($payload);
-        $claims = $this->tokenManager->getClaims($token);
-        $this->assertSame($payload, $claims);
-        $this->assertEquals($claims['sub'], $payload['sub']);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->tokenManager = new TokenManager(self::SECRET);
     }
 }

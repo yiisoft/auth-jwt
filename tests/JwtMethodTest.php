@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Auth\Jwt\Tests;
 
 use Jose\Component\Checker\InvalidClaimException;
+use Nyholm\Psr7\Response;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -13,6 +14,7 @@ use Yiisoft\Auth\Jwt\JwtMethod;
 use Yiisoft\Auth\Jwt\Tests\Stub\FakeIdentity;
 use Yiisoft\Auth\Jwt\Tests\Stub\FakeIdentityRepository;
 use Yiisoft\Auth\Jwt\TokenManager;
+use Yiisoft\Auth\Jwt\TokenManagerInterface;
 use Yiisoft\Http\Header;
 use Yiisoft\Http\Method;
 
@@ -31,6 +33,65 @@ class JwtMethodTest extends TestCase
 
         $this->assertNotNull($result);
         $this->assertEquals('123', $result->getId());
+    }
+
+    public function testUnSuccessfulAuthentication(): void
+    {
+        $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));
+        $tokenManager = new TokenManager(self::SECRET);
+        $payload = $this->getPayload();
+        $token = $tokenManager->createToken($payload);
+        $result = (new JwtMethod($identityRepository, $tokenManager))->authenticate(
+            $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
+        );
+
+        $this->assertNull($result);
+    }
+
+    public function testEmptyToken(): void
+    {
+        $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));
+        $tokenManager = new TokenManager(self::SECRET);
+        $result = (new JwtMethod($identityRepository, $tokenManager))->authenticate(
+            $this->createRequest()
+        );
+
+        $this->assertNull($result);
+    }
+
+    public function testChallengeIsCorrect(): void
+    {
+        $response = new Response(400);
+        $identityRepository = new FakeIdentityRepository($this->createIdentity());
+        $authenticationMethod = new JwtMethod($identityRepository, $this->getTokenManager());
+
+        $this->assertEquals(400, $authenticationMethod->challenge($response)->getStatusCode());
+        $this->assertNotEmpty($authenticationMethod->challenge($response)->getHeaderLine(Header::WWW_AUTHENTICATE));
+    }
+
+    public function testCheckTokenIsExpired(): void
+    {
+        $this->expectException(InvalidClaimException::class);
+        $this->expectErrorMessage('The token expired.');
+        $identityRepository = new FakeIdentityRepository($this->createIdentity());
+        $tokenManager = $this->getTokenManager();
+        $payload = $this->getPayload();
+        $payload['exp'] = time() - 1;
+        $token = $tokenManager->createToken($payload);
+        (new JwtMethod($identityRepository, $tokenManager))->authenticate(
+            $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
+        );
+    }
+
+    public function testImmutability(): void
+    {
+        $identityRepository = new FakeIdentityRepository($this->createIdentity());
+        $original = new JwtMethod($identityRepository, $this->getTokenManager());
+        $this->assertNotSame($original, $original->withHeaderName('headerName'));
+        $this->assertNotSame($original, $original->withIdentifier('id'));
+        $this->assertNotSame($original, $original->withQueryParamName('token'));
+        $this->assertNotSame($original, $original->withRealm('gateway'));
+        $this->assertNotSame($original, $original->withHeaderTokenPattern('pattern'));
     }
 
     private function createIdentity(?string $id = '123'): IdentityInterface
@@ -55,29 +116,8 @@ class JwtMethodTest extends TestCase
         return new ServerRequest(Method::GET, '/', $headers);
     }
 
-    public function testUnSuccessfulAuthentication(): void
+    private function getTokenManager(): TokenManagerInterface
     {
-        $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));
-        $tokenManager = new TokenManager(self::SECRET);
-        $payload = $this->getPayload();
-        $token = $tokenManager->createToken($payload);
-        $result = (new JwtMethod($identityRepository, $tokenManager))->authenticate(
-            $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
-        );
-
-        $this->assertNull($result);
-    }
-
-    public function testCheckTokenIsExpired(): void
-    {
-        $this->expectException(InvalidClaimException::class);
-        $identityRepository = new FakeIdentityRepository($this->createIdentity());
-        $tokenManager = new TokenManager(self::SECRET);
-        $payload = $this->getPayload();
-        $payload['exp'] = time() - 1;
-        $token = $tokenManager->createToken($payload);
-        (new JwtMethod($identityRepository, $tokenManager))->authenticate(
-            $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
-        );
+        return new TokenManager(self::SECRET);
     }
 }

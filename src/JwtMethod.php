@@ -23,9 +23,9 @@ final class JwtMethod implements AuthenticationMethodInterface
     private string $headerTokenPattern = '/^Bearer\s+(.*?)$/';
     private string $realm = 'api';
     private string $identifier = 'sub';
+    private ?array $claimCheckers;
     private IdentityRepositoryInterface $identityRepository;
     private TokenManagerInterface $tokenManager;
-    private ?array $claimCheckers;
 
     public function __construct(
         IdentityRepositoryInterface $identityRepository,
@@ -50,6 +50,25 @@ final class JwtMethod implements AuthenticationMethodInterface
             return $this->identityRepository->findIdentity((string)$claims[$this->identifier]);
         }
         return null;
+    }
+
+    private function getAuthenticationToken(ServerRequestInterface $request): ?string
+    {
+        $authHeaders = $request->getHeader($this->headerName);
+        $authHeader = \reset($authHeaders);
+        if (!empty($authHeader)) {
+            if (preg_match($this->headerTokenPattern, $authHeader, $matches)) {
+                return $matches[1];
+            }
+            return null;
+        }
+
+        return $request->getQueryParams()[$this->queryParamName] ?? null;
+    }
+
+    private function getClaimChecker(): ClaimCheckerManager
+    {
+        return new ClaimCheckerManager($this->claimCheckers);
     }
 
     public function challenge(ResponseInterface $response): ResponseInterface
@@ -110,26 +129,5 @@ final class JwtMethod implements AuthenticationMethodInterface
         $new = clone $this;
         $new->identifier = $identifier;
         return $new;
-    }
-
-    private function getAuthenticationToken(ServerRequestInterface $request): ?string
-    {
-        $authHeaders = $request->getHeader($this->headerName);
-        $authHeader = \reset($authHeaders);
-        if (!empty($authHeader)) {
-            if (preg_match($this->headerTokenPattern, $authHeader, $matches)) {
-                $authHeader = $matches[1];
-            } else {
-                return null;
-            }
-            return $authHeader;
-        }
-
-        return $request->getQueryParams()[$this->queryParamName] ?? null;
-    }
-
-    private function getClaimChecker(): ClaimCheckerManager
-    {
-        return new ClaimCheckerManager($this->claimCheckers);
     }
 }

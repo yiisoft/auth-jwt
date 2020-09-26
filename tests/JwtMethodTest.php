@@ -48,6 +48,20 @@ class JwtMethodTest extends TestCase
         $this->assertNull($result);
     }
 
+    public function testSuccessfulQueryParameterAuthentication(): void
+    {
+        $identityRepository = new FakeIdentityRepository($this->createIdentity());
+        $tokenManager = new TokenManager(self::SECRET);
+        $payload = $this->getPayload();
+        $token = $tokenManager->createToken($payload);
+        $result = (new JwtMethod($identityRepository, $tokenManager))->authenticate(
+            $this->createRequest()->withQueryParams(['access-token' => $token])
+        );
+
+        $this->assertNotNull($result);
+        $this->assertEquals($result->getId(), $payload['sub']);
+    }
+
     public function testEmptyToken(): void
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));

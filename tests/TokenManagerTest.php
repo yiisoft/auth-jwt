@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Auth\Jwt\Tests;
 
 use Jose\Component\Signature\Algorithm\ES256;
+use Jose\Component\Signature\Algorithm\HS384;
+use Jose\Component\Signature\Serializer\JSONFlattenedSerializer;
 use Jose\Component\Signature\Serializer\JSONGeneralSerializer;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Auth\Jwt\TokenManager;
@@ -52,6 +54,29 @@ class TokenManagerTest extends TestCase
         $this->assertNotSame($original, $original->withAlgorithms([new ES256()]));
         $this->assertNotSame($original, $original->withSecret('another-secret'));
         $this->assertNotSame($original, $original->withSerializer(new JSONGeneralSerializer()));
+    }
+
+    public function testWithCustomAlgorithms(): void
+    {
+        $payload = $this->getPayload();
+        $token = $this->tokenManager->withAlgorithms([new HS384()])->createToken($payload);
+        $this->assertIsString($token);
+    }
+
+
+    public function testWithCustomSerializer(): void
+    {
+        $payload = $this->getPayload();
+        $token = $this->tokenManager->withSerializer(new JSONFlattenedSerializer())->createToken($payload);
+        $this->assertIsString($token);
+    }
+
+    public function testWithCustomSecret(): void
+    {
+        $payload = $this->getPayload();
+        $secret = 'adg$#fv4ggsg5g5EG%h5shgsdsh55eggb4shjtj6sw5hesvd0h5h';
+        $token = $this->tokenManager->withSecret($secret)->createToken($payload);
+        $this->assertIsString($token);
     }
 
     private function getPayload(): array

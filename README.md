@@ -26,6 +26,47 @@ composer install yiisoft/auth-jwt
 
 ## General usage
 
+1. Set jwt secret in your ```params.php``` config file:
+```php
+    'yiisoft/auth-jwt' => [
+        'secret' => 'your-secret'
+    ],
+```
+
+2. Setup definitions, required for ```\Yiisoft\Auth\Middleware\Authentication``` middleware in config, for example, in ```web.php```:
+```php
+    Yiisoft\Auth\Jwt\TokenManagerInterface::class => [
+        '__class' => Yiisoft\Auth\Jwt\TokenManager::class,
+        '__construct()' => [
+            'secret' => $params['yiisoft/auth-jwt']['secret']
+        ]
+    ],
+
+    Yiisoft\Auth\AuthenticationMethodInterface::class => [
+        '__class' => Yiisoft\Auth\Jwt\JwtMethod::class
+    ],
+```
+Don't forget to declare your implementations of ```\Yiisoft\Auth\IdentityInterface``` and ```\Yiisoft\Auth\IdentityRepositoryInterface``` also.
+
+After that you can use ```Yiisoft\Auth\Middleware\Authentication``` middleware.
+
+Read more about middlewares in the [middleware guide](https://github.com/yiisoft/docs/blob/master/guide/en/structure/middleware.md). 
+
+Otherwise, you can configure Authentication middleware manuallly:
+```php
+$identityRepository = getIdentityRepository(); // \Yiisoft\Auth\IdentityRepositoryInterface
+
+$tokenManager = $container->get(\Yiisoft\Auth\Jwt\TokenManagerInterface::class);
+
+$authenticationMethod = new \Yiisoft\Auth\Jwt\JwtMethod($identityRepository, $tokenManager);
+
+$middleware = new \Yiisoft\Auth\Middleware\Authentication(
+    $authenticationMethod,
+    $responseFactory, // PSR-17 ResponseFactoryInterface
+    $failureHandler // optional, \Yiisoft\Auth\Handler\AuthenticationFailureHandler by default
+);
+```
+
 ## Unit testing
 
 The package is tested with [PHPUnit](https://phpunit.de/). To run tests:

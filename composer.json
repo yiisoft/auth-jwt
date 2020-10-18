@@ -30,7 +30,7 @@
     },
     "require-dev": {
         "nyholm/psr7": "^1.3",
-        "infection/infection": "^0.17.0",
+        "infection/infection": "^0.17.0 || ^0.18",
         "phpunit/phpunit": "^9.3",
         "vimeo/psalm": "^3.15"
     },

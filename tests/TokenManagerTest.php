@@ -47,6 +47,14 @@ class TokenManagerTest extends TestCase
         $this->assertEmpty($claims);
     }
 
+    public function testWrongKeyToken(): void
+    {
+        $payload = [];
+        $token = (new TokenManager(self::SECRET . 'wrong'))->createToken($payload);
+        $claims = $this->tokenManager->getClaims($token);
+        $this->assertNull($claims);
+    }
+
     public function testImmutability(): void
     {
         $original = new TokenManager(self::SECRET);

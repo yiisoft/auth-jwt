@@ -51,10 +51,11 @@ final class TokenManager implements TokenManagerInterface
         $jws = $this->serializer->unserialize($token);
 
         $isVerified = $this->verifyToken($jws, $jwk);
-        if (!$isVerified || $jws->getPayload() === null) {
+        if (!$isVerified) {
             return null;
         }
-        return Json::decode($jws->getPayload());
+
+        return Json::decode($jws->getPayload() ?? '');
     }
 
     public function withSecret(string $secret): self

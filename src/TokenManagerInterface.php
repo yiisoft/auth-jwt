@@ -9,15 +9,7 @@ namespace Yiisoft\Auth\Jwt;
  */
 interface TokenManagerInterface
 {
-    /**
-     * @param array $payload
-     * @return string
-     */
     public function createToken(array $payload): string;
 
-    /**
-     * @param string $token
-     * @return array|null
-     */
     public function getClaims(string $token): ?array;
 }

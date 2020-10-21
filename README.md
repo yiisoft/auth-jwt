@@ -16,12 +16,16 @@
 
 The package provides JWT authentication method for [Yii Auth](https://github.com/yiisoft/auth/).
 
+## Requirements
+
+- PHP 7.4 or higher.
+
 ## Installation
 
 The package could be installed with composer:
 
 ```
-composer install yiisoft/auth-jwt
+composer install yiisoft/auth-jwt --prefer-dist
 ```
 
 ## General usage
@@ -46,7 +50,7 @@ composer install yiisoft/auth-jwt
         '__class' => Yiisoft\Auth\Jwt\JwtMethod::class
     ],
 ```
-Don't forget to declare your implementations of ```\Yiisoft\Auth\IdentityInterface``` and ```\Yiisoft\Auth\IdentityRepositoryInterface``` also.
+> Note: Don't forget to declare your implementations of ```\Yiisoft\Auth\IdentityInterface``` and ```\Yiisoft\Auth\IdentityRepositoryInterface``` also.
 
 After that you can use ```Yiisoft\Auth\Middleware\Authentication``` middleware.
 
@@ -90,3 +94,10 @@ The code is statically analyzed with [Psalm](https://psalm.dev/). To run static 
 ```php
 ./vendor/bin/psalm
 ```
+
+## License
+
+The Yii Auth JWT is free software. It is released under the terms of the BSD License.
+Please see [`LICENSE`](./LICENSE.md) for more information.
+
+Maintained by [Yii Software](https://www.yiiframework.com/).

@@ -45,12 +45,12 @@ final class JwtMethod implements AuthenticationMethodInterface
         }
 
         $claims = $this->tokenManager->getClaims($token);
-        if ($claims !== null && isset($claims[$this->identifier])) {
-            $this->getClaimCheckerManager()->check($claims);
-            return $this->identityRepository->findIdentity((string)$claims[$this->identifier]);
+        if ($claims === null || !isset($claims[$this->identifier])) {
+            return null;
         }
 
-        return null;
+        $this->getClaimCheckerManager()->check($claims);
+        return $this->identityRepository->findIdentity((string)$claims[$this->identifier]);
     }
 
     private function getAuthenticationToken(ServerRequestInterface $request): ?string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Auth\Jwt;
 
+use Jose\Component\Checker\ClaimChecker;
 use Jose\Component\Checker\ClaimCheckerManager;
 use Jose\Component\Checker\ExpirationTimeChecker;
 use Psr\Http\Message\ResponseInterface;
@@ -15,6 +16,7 @@ use Yiisoft\Http\Header;
 
 /**
  * Authentication method based on JWT token.
+ * @link https://jwt.io/
  */
 final class JwtMethod implements AuthenticationMethodInterface
 {
@@ -23,10 +25,20 @@ final class JwtMethod implements AuthenticationMethodInterface
     private string $headerTokenPattern = '/^Bearer\s+(.*?)$/';
     private string $realm = 'api';
     private string $identifier = 'sub';
+
+    /**
+     * @var ClaimChecker[]
+     */
     private array $claimCheckers;
+
     private IdentityRepositoryInterface $identityRepository;
     private TokenManagerInterface $tokenManager;
 
+    /**
+     * @param IdentityRepositoryInterface $identityRepository
+     * @param TokenManagerInterface $tokenManager
+     * @param ClaimChecker[]|null $claimCheckers
+     */
     public function __construct(
         IdentityRepositoryInterface $identityRepository,
         TokenManagerInterface $tokenManager,
@@ -61,7 +73,9 @@ final class JwtMethod implements AuthenticationMethodInterface
             return $matches[1];
         }
 
-        return $request->getQueryParams()[$this->queryParameterName] ?? null;
+        /** @var mixed */
+        $token = $request->getQueryParams()[$this->queryParameterName] ?? null;
+        return is_string($token) ? $token : null;
     }
 
     private function getClaimCheckerManager(): ClaimCheckerManager

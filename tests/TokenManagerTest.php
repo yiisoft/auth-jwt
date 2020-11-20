@@ -71,7 +71,6 @@ class TokenManagerTest extends TestCase
         $this->assertIsString($token);
     }
 
-
     public function testWithCustomSerializer(): void
     {
         $payload = $this->getPayload();

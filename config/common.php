@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Yiisoft\Auth\Jwt\TokenManager;
 use Yiisoft\Auth\Jwt\TokenManagerInterface;
 
@@ -9,5 +11,5 @@ use Yiisoft\Auth\Jwt\TokenManagerInterface;
 return [
     TokenManagerInterface::class => static function () use ($params) {
         return new TokenManager($params['yiisoft/auth-jwt']['secret']);
-    }
+    },
 ];

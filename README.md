@@ -28,7 +28,7 @@ The package could be installed with composer:
 composer install yiisoft/auth-jwt --prefer-dist
 ```
 
-## Configuration
+## General usage
 
 ### Configuring within Yii
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Auth\Jwt;
 
+use Jose\Component\Core\Algorithm;
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Core\JWK;
 use Jose\Component\KeyManagement\JWKFactory;
@@ -18,9 +19,17 @@ use Yiisoft\Json\Json;
 final class TokenManager implements TokenManagerInterface
 {
     private string $secret;
+    /**
+     * @var Algorithm[]
+     */
     private array $algorithms;
     private JWSSerializer $serializer;
 
+    /**
+     * @param string $secret A shared secret used to create a JSON Web Key.
+     * @param Algorithm[]|null $algorithms
+     * @param JWSSerializer|null $serializer
+     */
     public function __construct(
         string $secret,
         ?array $algorithms = null,
@@ -58,6 +67,11 @@ final class TokenManager implements TokenManagerInterface
         return Json::decode($jws->getPayload() ?? '');
     }
 
+    /**
+     * @param string $secret A shared secret used to create a JSON Web Key.
+     *
+     * @return $this
+     */
     public function withSecret(string $secret): self
     {
         $new = clone $this;
@@ -65,6 +79,11 @@ final class TokenManager implements TokenManagerInterface
         return $new;
     }
 
+    /**
+     * @param Algorithm[] $algorithms
+     *
+     * @return self
+     */
     public function withAlgorithms(array $algorithms): self
     {
         $new = clone $this;

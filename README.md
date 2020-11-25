@@ -31,33 +31,36 @@ composer install yiisoft/auth-jwt --prefer-dist
 
 ## General usage
 
-1. Set jwt secret in your ```params.php``` config file:
-```php
+### Configuring within Yii
+
+1. Set JWT secret in your `params.php` config file:
+    ```php
     'yiisoft/auth-jwt' => [
         'secret' => 'your-secret'
     ],
-```
-
+    ```
 2. Setup definitions, required for ```\Yiisoft\Auth\Middleware\Authentication``` middleware in config, for example, in ```web.php```:
-```php
-    Yiisoft\Auth\Jwt\TokenManagerInterface::class => [
-        '__class' => Yiisoft\Auth\Jwt\TokenManager::class,
-        '__construct()' => [
-            'secret' => $params['yiisoft/auth-jwt']['secret']
-        ]
-    ],
+    ```php
+        Yiisoft\Auth\Jwt\TokenManagerInterface::class => [
+            '__class' => Yiisoft\Auth\Jwt\TokenManager::class,
+            '__construct()' => [
+                'secret' => $params['yiisoft/auth-jwt']['secret']
+            ]
+        ],
+    
+        Yiisoft\Auth\AuthenticationMethodInterface::class => [
+            '__class' => Yiisoft\Auth\Jwt\JwtMethod::class
+        ],
+    ```
+    > Note: Don't forget to declare your implementations of ```\Yiisoft\Auth\IdentityInterface``` and ```\Yiisoft\Auth\IdentityRepositoryInterface``` also.
 
-    Yiisoft\Auth\AuthenticationMethodInterface::class => [
-        '__class' => Yiisoft\Auth\Jwt\JwtMethod::class
-    ],
-```
-> Note: Don't forget to declare your implementations of ```\Yiisoft\Auth\IdentityInterface``` and ```\Yiisoft\Auth\IdentityRepositoryInterface``` also.
+3. Use `Yiisoft\Auth\Middleware\Authentication` middleware.
+   Read more about middlewares in the [middleware guide](https://github.com/yiisoft/docs/blob/master/guide/en/structure/middleware.md). 
 
-After that you can use ```Yiisoft\Auth\Middleware\Authentication``` middleware.
+### Configuring independently
 
-Read more about middlewares in the [middleware guide](https://github.com/yiisoft/docs/blob/master/guide/en/structure/middleware.md). 
+You can configure `Authentication` middleware manually:
 
-Otherwise, you can configure Authentication middleware manuallly:
 ```php
 $identityRepository = getIdentityRepository(); // \Yiisoft\Auth\IdentityRepositoryInterface
 
@@ -76,7 +79,7 @@ $middleware = new \Yiisoft\Auth\Middleware\Authentication(
 
 The package is tested with [PHPUnit](https://phpunit.de/). To run tests:
 
-```php
+```shell
 ./vendor/bin/phpunit
 ```
 
@@ -84,7 +87,7 @@ The package is tested with [PHPUnit](https://phpunit.de/). To run tests:
 
 The package tests are checked with [Infection](https://infection.github.io/) mutation framework. To run it:
 
-```php
+```shell
 ./vendor/bin/infection
 ```
 
@@ -92,7 +95,7 @@ The package tests are checked with [Infection](https://infection.github.io/) mut
 
 The code is statically analyzed with [Psalm](https://psalm.dev/). To run static analysis:
 
-```php
+```shell
 ./vendor/bin/psalm
 ```
 

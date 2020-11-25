@@ -15,7 +15,7 @@
 [![static analysis](https://github.com/yiisoft/auth-jwt/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/auth-jwt/actions?query=workflow%3A%22static+analysis%22)
 [![type-coverage](https://shepherd.dev/github/yiisoft/auth-jwt/coverage.svg)](https://shepherd.dev/github/yiisoft/auth-jwt)
 
-The package provides JWT authentication method for [Yii Auth](https://github.com/yiisoft/auth/).
+The package provides [JWT authentication](https://jwt.io/) method for [Yii Auth](https://github.com/yiisoft/auth/).
 
 ## Requirements
 
@@ -39,20 +39,32 @@ composer install yiisoft/auth-jwt --prefer-dist
         'secret' => 'your-secret'
     ],
     ```
-2. Setup definitions, required for ```\Yiisoft\Auth\Middleware\Authentication``` middleware in config, for example, in ```web.php```:
-    ```php
-        Yiisoft\Auth\Jwt\TokenManagerInterface::class => [
-            '__class' => Yiisoft\Auth\Jwt\TokenManager::class,
-            '__construct()' => [
-                'secret' => $params['yiisoft/auth-jwt']['secret']
-            ]
-        ],
-    
-        Yiisoft\Auth\AuthenticationMethodInterface::class => [
-            '__class' => Yiisoft\Auth\Jwt\JwtMethod::class
-        ],
-    ```
-    > Note: Don't forget to declare your implementations of ```\Yiisoft\Auth\IdentityInterface``` and ```\Yiisoft\Auth\IdentityRepositoryInterface``` also.
+2. Setup definitions, required for `\Yiisoft\Auth\Middleware\Authentication` middleware in config, for example,
+   in `config/web/auth.php`:
+   ```php   
+   <?php
+   
+   declare(strict_types=1);
+   
+   /** @var array $params */
+   
+   use Yiisoft\Auth\Jwt\TokenManagerInterface;
+   use Yiisoft\Auth\Jwt\TokenManager;
+   use Yiisoft\Auth\AuthenticationMethodInterface;
+   use Yiisoft\Auth\Jwt\JwtMethod;
+   
+   return [
+       TokenManagerInterface::class => [
+           '__class' => TokenManager::class,
+           '__construct()' => [
+               'secret' => $params['yiisoft/auth-jwt']['secret']
+           ],
+       ],
+       
+       AuthenticationMethodInterface::class => JwtMethod::class,
+   ];
+   ```
+   > Note: Don't forget to declare your implementations of `\Yiisoft\Auth\IdentityInterface` and `\Yiisoft\Auth\IdentityRepositoryInterface`.
 
 3. Use `Yiisoft\Auth\Middleware\Authentication` middleware.
    Read more about middlewares in the [middleware guide](https://github.com/yiisoft/docs/blob/master/guide/en/structure/middleware.md). 
@@ -62,7 +74,8 @@ composer install yiisoft/auth-jwt --prefer-dist
 You can configure `Authentication` middleware manually:
 
 ```php
-$identityRepository = getIdentityRepository(); // \Yiisoft\Auth\IdentityRepositoryInterface
+/** @var \Yiisoft\Auth\IdentityRepositoryInterface $identityRepository */
+$identityRepository = getIdentityRepository();
 
 $tokenManager = $container->get(\Yiisoft\Auth\Jwt\TokenManagerInterface::class);
 

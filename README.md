@@ -13,6 +13,7 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/auth-jwt/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/auth-jwt/?branch=master)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyiisoft%2Fauth-jwt%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yiisoft/auth-jwt/master)
 [![static analysis](https://github.com/yiisoft/auth-jwt/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/auth-jwt/actions?query=workflow%3A%22static+analysis%22)
+[![type-coverage](https://shepherd.dev/github/yiisoft/auth-jwt/coverage.svg)](https://shepherd.dev/github/yiisoft/auth-jwt)
 
 The package provides JWT authentication method for [Yii Auth](https://github.com/yiisoft/auth/).
 

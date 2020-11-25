@@ -90,6 +90,7 @@ final class JwtMethod implements AuthenticationMethodInterface
 
     /**
      * @param string $realm The HTTP authentication realm.
+     *
      * @return self
      */
     public function withRealm(string $realm): self
@@ -101,6 +102,7 @@ final class JwtMethod implements AuthenticationMethodInterface
 
     /**
      * @param string $headerName
+     *
      * @return self
      */
     public function withHeaderName(string $headerName): self
@@ -112,6 +114,7 @@ final class JwtMethod implements AuthenticationMethodInterface
 
     /**
      * @param string $headerTokenPattern
+     *
      * @return self
      */
     public function withHeaderTokenPattern(string $headerTokenPattern): self
@@ -123,6 +126,7 @@ final class JwtMethod implements AuthenticationMethodInterface
 
     /**
      * @param string $queryParameterName
+     *
      * @return self
      */
     public function withQueryParameterName(string $queryParameterName): self
@@ -134,6 +138,7 @@ final class JwtMethod implements AuthenticationMethodInterface
 
     /**
      * @param string $identifier
+     *
      * @return self
      */
     public function withIdentifier(string $identifier): self

@@ -16,6 +16,7 @@ use Yiisoft\Http\Header;
 
 /**
  * Authentication method based on JWT token.
+ *
  * @link https://jwt.io/
  */
 final class JwtMethod implements AuthenticationMethodInterface

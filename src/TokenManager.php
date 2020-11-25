@@ -69,6 +69,7 @@ final class TokenManager implements TokenManagerInterface
 
     /**
      * @param string $secret A shared secret used to create a JSON Web Key.
+     *
      * @return $this
      */
     public function withSecret(string $secret): self
@@ -80,6 +81,7 @@ final class TokenManager implements TokenManagerInterface
 
     /**
      * @param Algorithm[] $algorithms
+     *
      * @return self
      */
     public function withAlgorithms(array $algorithms): self

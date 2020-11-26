@@ -33,7 +33,7 @@
         "phpunit/phpunit": "^9.3",
         "roave/infection-static-analysis-plugin": "^1.5",
         "vimeo/psalm": "^4.1",
-        "phan/phan": "^3.0"
+        "phan/phan": "^3.2"
     },
     "autoload": {
         "psr-4": {

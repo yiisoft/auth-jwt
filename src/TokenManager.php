@@ -64,6 +64,7 @@ final class TokenManager implements TokenManagerInterface
             return null;
         }
 
+        /** @var array<array-key, mixed>|null */
         return Json::decode($jws->getPayload() ?? '');
     }
 

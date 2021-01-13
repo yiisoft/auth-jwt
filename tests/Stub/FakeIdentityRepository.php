@@ -20,9 +20,4 @@ final class FakeIdentityRepository implements IdentityRepositoryInterface
     {
         return $this->returnIdentity->getId() === $id ? $this->returnIdentity : null;
     }
-
-    public function findIdentityByToken(string $token, string $type = null): ?IdentityInterface
-    {
-        return $this->returnIdentity;
-    }
 }

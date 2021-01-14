@@ -13,6 +13,8 @@ use Yiisoft\Auth\AuthenticationMethodInterface;
 use Yiisoft\Auth\IdentityInterface;
 use Yiisoft\Auth\IdentityRepositoryInterface;
 use Yiisoft\Http\Header;
+use function is_string;
+use function reset;
 
 /**
  * Authentication method based on JWT token.
@@ -69,7 +71,7 @@ final class JwtMethod implements AuthenticationMethodInterface
     private function getAuthenticationToken(ServerRequestInterface $request): ?string
     {
         $authHeaders = $request->getHeader($this->headerName);
-        $authHeader = \reset($authHeaders);
+        $authHeader = reset($authHeaders);
         if (!empty($authHeader) && preg_match($this->headerTokenPattern, $authHeader, $matches)) {
             return $matches[1];
         }

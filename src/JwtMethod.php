@@ -19,6 +19,7 @@ use function reset;
 /**
  * Authentication method based on JWT token.
  *
+ * @link https://tools.ietf.org/html/rfc7519
  * @link https://jwt.io/
  */
 final class JwtMethod implements AuthenticationMethodInterface

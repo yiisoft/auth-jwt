@@ -15,7 +15,7 @@
 [![static analysis](https://github.com/yiisoft/auth-jwt/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/auth-jwt/actions?query=workflow%3A%22static+analysis%22)
 [![type-coverage](https://shepherd.dev/github/yiisoft/auth-jwt/coverage.svg)](https://shepherd.dev/github/yiisoft/auth-jwt)
 
-The package provides [JWT authentication](https://jwt.io/) method for [Yii Auth](https://github.com/yiisoft/auth/).
+The package provides [JWT authentication](https://tools.ietf.org/html/rfc7519) method for [Yii Auth](https://github.com/yiisoft/auth/).
 
 ## Requirements
 

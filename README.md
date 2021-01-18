@@ -26,7 +26,7 @@ The package provides [JWT authentication](https://tools.ietf.org/html/rfc7519) m
 The package could be installed with composer:
 
 ```
-composer install yiisoft/auth-jwt --prefer-dist
+composer require yiisoft/auth-jwt --prefer-dist
 ```
 
 ## General usage

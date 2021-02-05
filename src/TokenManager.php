@@ -74,6 +74,7 @@ final class TokenManager implements TokenManagerInterface
 
     /**
      * @param string $secret A shared secret used to create a JSON Web Key.
+     *
      * @see https://tools.ietf.org/html/rfc7517
      *
      * @return $this
@@ -87,6 +88,7 @@ final class TokenManager implements TokenManagerInterface
 
     /**
      * @param Algorithm[] $algorithms Algorithms for signing JSON Web Signature.
+     *
      * @see https://tools.ietf.org/html/rfc7515
      *
      * @return self
@@ -100,6 +102,7 @@ final class TokenManager implements TokenManagerInterface
 
     /**
      * @param JWSSerializer $serializer JSON Web Signature serializer.
+     *
      * @see https://tools.ietf.org/html/rfc7515
      *
      * @return self

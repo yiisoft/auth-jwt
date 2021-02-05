@@ -39,7 +39,7 @@ composer require yiisoft/auth-jwt --prefer-dist
         'secret' => 'your-secret'
     ],
     ```
-2. Setup definitions, required for `\Yiisoft\Auth\Middleware\Authentication` middleware in config, for example,
+2. Setup definitions, required for `\Yiisoft\Auth\Middleware\Authentication` middleware in a config, for example,
    in `config/web/auth.php`:
    ```php   
    <?php

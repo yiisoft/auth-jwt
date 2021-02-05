@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Auth\Jwt;
 
 /**
- * The interface that creates and decodes JWT Signature.
+ * Token manager creates a token and is getting a list of clams for it.
  */
 interface TokenManagerInterface
 {

@@ -16,6 +16,10 @@ use Jose\Component\Signature\Serializer\CompactSerializer;
 use Jose\Component\Signature\Serializer\JWSSerializer;
 use Yiisoft\Json\Json;
 
+/**
+ * Token manager creates a token and is getting a list of clams for it.
+ * This implementation signs a token with JSON Web Signature.
+ */
 final class TokenManager implements TokenManagerInterface
 {
     private string $secret;
@@ -27,8 +31,8 @@ final class TokenManager implements TokenManagerInterface
 
     /**
      * @param string $secret A shared secret used to create a JSON Web Key.
-     * @param Algorithm[]|null $algorithms
-     * @param JWSSerializer|null $serializer
+     * @param Algorithm[]|null $algorithms Algorithms for signing JSON Web Signature. {@see HS256} by default.
+     * @param JWSSerializer|null $serializer JSON Web Signature serializer. {@see CompactSerializer} by default.
      */
     public function __construct(
         string $secret,
@@ -70,6 +74,7 @@ final class TokenManager implements TokenManagerInterface
 
     /**
      * @param string $secret A shared secret used to create a JSON Web Key.
+     * @see https://tools.ietf.org/html/rfc7517
      *
      * @return $this
      */
@@ -81,7 +86,8 @@ final class TokenManager implements TokenManagerInterface
     }
 
     /**
-     * @param Algorithm[] $algorithms
+     * @param Algorithm[] $algorithms Algorithms for signing JSON Web Signature.
+     * @see https://tools.ietf.org/html/rfc7515
      *
      * @return self
      */
@@ -92,6 +98,12 @@ final class TokenManager implements TokenManagerInterface
         return $new;
     }
 
+    /**
+     * @param JWSSerializer $serializer JSON Web Signature serializer.
+     * @see https://tools.ietf.org/html/rfc7515
+     *
+     * @return self
+     */
     public function withSerializer(JWSSerializer $serializer): self
     {
         $new = clone $this;

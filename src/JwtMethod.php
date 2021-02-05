@@ -39,9 +39,9 @@ final class JwtMethod implements AuthenticationMethodInterface
     private TokenManagerInterface $tokenManager;
 
     /**
-     * @param IdentityRepositoryInterface $identityRepository
-     * @param TokenManagerInterface $tokenManager
-     * @param ClaimChecker[]|null $claimCheckers
+     * @param IdentityRepositoryInterface $identityRepository Repository to get identity from.
+     * @param TokenManagerInterface $tokenManager Token manager to obtain claims from.
+     * @param ClaimChecker[]|null $claimCheckers Claim checkers. If not specified, {@see ExpirationTimeChecker} is used.
      */
     public function __construct(
         IdentityRepositoryInterface $identityRepository,
@@ -105,7 +105,7 @@ final class JwtMethod implements AuthenticationMethodInterface
     }
 
     /**
-     * @param string $headerName
+     * @param string $headerName Authorization header name.
      *
      * @return self
      */
@@ -117,7 +117,8 @@ final class JwtMethod implements AuthenticationMethodInterface
     }
 
     /**
-     * @param string $headerTokenPattern
+     * @param string $headerTokenPattern Regular expression to use for getting a token from authorization header.
+     * Token value should match first capturing group.
      *
      * @return self
      */
@@ -129,7 +130,7 @@ final class JwtMethod implements AuthenticationMethodInterface
     }
 
     /**
-     * @param string $queryParameterName
+     * @param string $queryParameterName Request parameter name to check for a token.
      *
      * @return self
      */
@@ -141,7 +142,7 @@ final class JwtMethod implements AuthenticationMethodInterface
     }
 
     /**
-     * @param string $identifier
+     * @param string $identifier Identifier to check claims for.
      *
      * @return self
      */

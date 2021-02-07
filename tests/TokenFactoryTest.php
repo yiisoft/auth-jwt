@@ -9,18 +9,18 @@ use Jose\Component\Signature\Algorithm\HS384;
 use Jose\Component\Signature\Serializer\JSONFlattenedSerializer;
 use Jose\Component\Signature\Serializer\JSONGeneralSerializer;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Auth\Jwt\TokenManager;
-use Yiisoft\Auth\Jwt\TokenManagerInterface;
+use Yiisoft\Auth\Jwt\TokenFactory;
+use Yiisoft\Auth\Jwt\TokenFactoryInterface;
 
-class TokenManagerTest extends TestCase
+class TokenFactoryTest extends TestCase
 {
     private const SECRET = 'dsgsdgr45t3eEF$G3G$3gee44tdsSagsdgGDsdLsadfaGsSfGDgEGEgsgrbswg344wgv34b5sdy67sdS';
-    private TokenManagerInterface $tokenManager;
+    private TokenFactoryInterface $tokenManager;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->tokenManager = new TokenManager(self::SECRET);
+        $this->tokenManager = new TokenFactory(self::SECRET);
     }
 
     public function testCreateToken(): void
@@ -50,14 +50,14 @@ class TokenManagerTest extends TestCase
     public function testWrongKeyToken(): void
     {
         $payload = [];
-        $token = (new TokenManager(self::SECRET . 'wrong'))->createToken($payload);
+        $token = (new TokenFactory(self::SECRET . 'wrong'))->createToken($payload);
         $claims = $this->tokenManager->getClaims($token);
         $this->assertNull($claims);
     }
 
     public function testImmutability(): void
     {
-        $original = new TokenManager(self::SECRET);
+        $original = new TokenFactory(self::SECRET);
 
         $this->assertNotSame($original, $original->withAlgorithms([new ES256()]));
         $this->assertNotSame($original, $original->withSecret('another-secret'));

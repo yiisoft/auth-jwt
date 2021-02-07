@@ -77,7 +77,7 @@ You can configure `Authentication` middleware manually:
 /** @var \Yiisoft\Auth\IdentityRepositoryInterface $identityRepository */
 $identityRepository = getIdentityRepository();
 
-$tokenManager = $container->get(\Yiisoft\Auth\Jwt\TokenManagerInterface::class);
+$tokenManager = $container->get(\Yiisoft\Auth\Jwt\TokenFactoryInterface::class);
 
 $authenticationMethod = new \Yiisoft\Auth\Jwt\JwtMethod($identityRepository, $tokenManager);
 

@@ -5,16 +5,24 @@ declare(strict_types=1);
 namespace Yiisoft\Auth\Jwt\Tests;
 
 use Jose\Component\Checker\InvalidClaimException;
+use Jose\Component\Core\AlgorithmManager;
+use Jose\Component\Signature\Algorithm\HS256;
+use Jose\Component\Signature\Algorithm\RS256;
+use Jose\Component\Signature\Serializer\CompactSerializer;
+use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Nyholm\Psr7\Response;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Yiisoft\Auth\IdentityInterface;
 use Yiisoft\Auth\Jwt\JwtMethod;
+use Yiisoft\Auth\Jwt\KeyFactory\FromSecret;
 use Yiisoft\Auth\Jwt\Tests\Stub\FakeIdentity;
 use Yiisoft\Auth\Jwt\Tests\Stub\FakeIdentityRepository;
-use Yiisoft\Auth\Jwt\TokenManager;
-use Yiisoft\Auth\Jwt\TokenManagerInterface;
+use Yiisoft\Auth\Jwt\TokenFactory;
+use Yiisoft\Auth\Jwt\TokenFactoryInterface;
+use Yiisoft\Auth\Jwt\TokenRepository;
+use Yiisoft\Auth\Jwt\TokenRepositoryInterface;
 use Yiisoft\Http\Header;
 use Yiisoft\Http\Method;
 
@@ -25,9 +33,9 @@ class JwtMethodTest extends TestCase
     public function testSuccessfulAuthentication(): void
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity());
-        $tokenManager = new TokenManager(self::SECRET);
-        $token = $tokenManager->createToken($this->getPayload());
-        $result = (new JwtMethod($identityRepository, $tokenManager))->authenticate(
+        $tokenManager = $this->getTokenFactory();
+        $token = $tokenManager->createToken($this->getPayload(), CompactSerializer::NAME);
+        $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
         );
 
@@ -38,10 +46,10 @@ class JwtMethodTest extends TestCase
     public function testUnSuccessfulAuthentication(): void
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));
-        $tokenManager = new TokenManager(self::SECRET);
+        $tokenManager = $this->getTokenFactory();
         $payload = $this->getPayload();
-        $token = $tokenManager->createToken($payload);
-        $result = (new JwtMethod($identityRepository, $tokenManager))->authenticate(
+        $token = $tokenManager->createToken($payload, CompactSerializer::NAME);
+        $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
         );
 
@@ -51,10 +59,10 @@ class JwtMethodTest extends TestCase
     public function testSuccessfulQueryParameterAuthentication(): void
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity());
-        $tokenManager = new TokenManager(self::SECRET);
+        $tokenFactory = $this->getTokenFactory();
         $payload = $this->getPayload();
-        $token = $tokenManager->createToken($payload);
-        $result = (new JwtMethod($identityRepository, $tokenManager))->authenticate(
+        $token = $tokenFactory->createToken($payload, CompactSerializer::NAME);
+        $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest()->withQueryParams(['access-token' => $token])
         );
 
@@ -65,8 +73,7 @@ class JwtMethodTest extends TestCase
     public function testEmptyToken(): void
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));
-        $tokenManager = new TokenManager(self::SECRET);
-        $result = (new JwtMethod($identityRepository, $tokenManager))->authenticate(
+        $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest()
         );
 
@@ -76,9 +83,9 @@ class JwtMethodTest extends TestCase
     public function testEmptyPayload(): void
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));
-        $tokenManager = new TokenManager(self::SECRET);
-        $token = $tokenManager->createToken([]);
-        $result = (new JwtMethod($identityRepository, $tokenManager))->authenticate(
+        $tokenManager = $this->getTokenFactory();
+        $token = $tokenManager->createToken([], CompactSerializer::NAME);
+        $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest()->withQueryParams(['access-token' => $token])
         );
 
@@ -89,7 +96,7 @@ class JwtMethodTest extends TestCase
     {
         $response = new Response(400);
         $identityRepository = new FakeIdentityRepository($this->createIdentity());
-        $authenticationMethod = new JwtMethod($identityRepository, $this->getTokenManager());
+        $authenticationMethod = new JwtMethod($identityRepository, $this->getTokenRepository());
 
         $this->assertEquals(400, $authenticationMethod->challenge($response)->getStatusCode());
         $this->assertNotEmpty($authenticationMethod->challenge($response)->getHeaderLine(Header::WWW_AUTHENTICATE));
@@ -100,11 +107,11 @@ class JwtMethodTest extends TestCase
         $this->expectException(InvalidClaimException::class);
         $this->expectErrorMessage('The token expired.');
         $identityRepository = new FakeIdentityRepository($this->createIdentity());
-        $tokenManager = $this->getTokenManager();
+        $tokenFactory = $this->getTokenFactory();
         $payload = $this->getPayload();
         $payload['exp'] = time() - 1;
-        $token = $tokenManager->createToken($payload);
-        (new JwtMethod($identityRepository, $tokenManager))->authenticate(
+        $token = $tokenFactory->createToken($payload, CompactSerializer::NAME);
+        (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
         );
     }
@@ -112,7 +119,7 @@ class JwtMethodTest extends TestCase
     public function testImmutability(): void
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity());
-        $original = new JwtMethod($identityRepository, $this->getTokenManager());
+        $original = new JwtMethod($identityRepository, $this->getTokenRepository());
         $this->assertNotSame($original, $original->withHeaderName('headerName'));
         $this->assertNotSame($original, $original->withIdentifier('id'));
         $this->assertNotSame($original, $original->withQueryParameterName('token'));
@@ -142,8 +149,28 @@ class JwtMethodTest extends TestCase
         return new ServerRequest(Method::GET, '/', $headers);
     }
 
-    private function getTokenManager(): TokenManagerInterface
+    private function getTokenRepository(): TokenRepositoryInterface
     {
-        return new TokenManager(self::SECRET);
+        return new TokenRepository($this->getKeyFactory(), $this->getAlgorithmManager(), $this->getSerializerManager());
+    }
+
+    private function getTokenFactory(): TokenFactoryInterface
+    {
+        return new TokenFactory($this->getKeyFactory(), $this->getAlgorithmManager(), $this->getSerializerManager());
+    }
+
+    private function getKeyFactory(): FromSecret
+    {
+        return new FromSecret(self::SECRET);
+    }
+
+    private function getAlgorithmManager(): AlgorithmManager
+    {
+        return new AlgorithmManager([new HS256()]);
+    }
+
+    public function getSerializerManager(): JWSSerializerManager
+    {
+        return new JWSSerializerManager([new CompactSerializer()]);
     }
 }

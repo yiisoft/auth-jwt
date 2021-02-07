@@ -7,7 +7,6 @@ namespace Yiisoft\Auth\Jwt\Tests;
 use Jose\Component\Checker\InvalidClaimException;
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Signature\Algorithm\HS256;
-use Jose\Component\Signature\Algorithm\RS256;
 use Jose\Component\Signature\Serializer\CompactSerializer;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Nyholm\Psr7\Response;

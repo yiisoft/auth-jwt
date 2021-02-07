@@ -12,7 +12,7 @@ return [
         ],
         'key' => [
             'secret' => '',
-            'file' => ''
+            'file' => '',
         ],
     ],
 ];

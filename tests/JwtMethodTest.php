@@ -5,31 +5,16 @@ declare(strict_types=1);
 namespace Yiisoft\Auth\Jwt\Tests;
 
 use Jose\Component\Checker\InvalidClaimException;
-use Jose\Component\Core\AlgorithmManager;
-use Jose\Component\Signature\Algorithm\HS256;
-use Jose\Component\Signature\Algorithm\RS256;
 use Jose\Component\Signature\Serializer\CompactSerializer;
-use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Nyholm\Psr7\Response;
-use Nyholm\Psr7\ServerRequest;
-use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
 use Yiisoft\Auth\IdentityInterface;
 use Yiisoft\Auth\Jwt\JwtMethod;
-use Yiisoft\Auth\Jwt\KeyFactory\FromSecret;
 use Yiisoft\Auth\Jwt\Tests\Stub\FakeIdentity;
 use Yiisoft\Auth\Jwt\Tests\Stub\FakeIdentityRepository;
-use Yiisoft\Auth\Jwt\TokenFactory;
-use Yiisoft\Auth\Jwt\TokenFactoryInterface;
-use Yiisoft\Auth\Jwt\TokenRepository;
-use Yiisoft\Auth\Jwt\TokenRepositoryInterface;
 use Yiisoft\Http\Header;
-use Yiisoft\Http\Method;
 
 class JwtMethodTest extends TestCase
 {
-    private const SECRET = 'dsgsdgr45t3eEF$G3G$3gee44tdsSagsdgGDsdLsadfaGsSfGDgEGEgsgrbswg344wgv34b5sdy67sdS';
-
     public function testSuccessfulAuthentication(): void
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity());
@@ -144,33 +129,4 @@ class JwtMethodTest extends TestCase
         ];
     }
 
-    private function createRequest(array $headers = []): ServerRequestInterface
-    {
-        return new ServerRequest(Method::GET, '/', $headers);
-    }
-
-    private function getTokenRepository(): TokenRepositoryInterface
-    {
-        return new TokenRepository($this->getKeyFactory(), $this->getAlgorithmManager(), $this->getSerializerManager());
-    }
-
-    private function getTokenFactory(): TokenFactoryInterface
-    {
-        return new TokenFactory($this->getKeyFactory(), $this->getAlgorithmManager(), $this->getSerializerManager());
-    }
-
-    private function getKeyFactory(): FromSecret
-    {
-        return new FromSecret(self::SECRET);
-    }
-
-    private function getAlgorithmManager(): AlgorithmManager
-    {
-        return new AlgorithmManager([new HS256()]);
-    }
-
-    public function getSerializerManager(): JWSSerializerManager
-    {
-        return new JWSSerializerManager([new CompactSerializer()]);
-    }
 }

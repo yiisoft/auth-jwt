@@ -4,86 +4,42 @@ declare(strict_types=1);
 
 namespace Yiisoft\Auth\Jwt\Tests;
 
-use Jose\Component\Signature\Algorithm\ES256;
-use Jose\Component\Signature\Algorithm\HS384;
-use Jose\Component\Signature\Serializer\JSONFlattenedSerializer;
-use Jose\Component\Signature\Serializer\JSONGeneralSerializer;
-use PHPUnit\Framework\TestCase;
+use Jose\Component\Signature\Serializer\CompactSerializer;
+use Yiisoft\Auth\Jwt\KeyFactory\FromSecret;
 use Yiisoft\Auth\Jwt\TokenFactory;
 use Yiisoft\Auth\Jwt\TokenFactoryInterface;
+use Yiisoft\Auth\Jwt\TokenRepositoryInterface;
 
 class TokenFactoryTest extends TestCase
 {
     private const SECRET = 'dsgsdgr45t3eEF$G3G$3gee44tdsSagsdgGDsdLsadfaGsSfGDgEGEgsgrbswg344wgv34b5sdy67sdS';
-    private TokenFactoryInterface $tokenManager;
+    private TokenFactoryInterface $tokenFactory;
+    private TokenRepositoryInterface $tokenRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->tokenManager = new TokenFactory(self::SECRET);
+        $this->tokenFactory = $this->getTokenFactory();
+        $this->tokenRepository = $this->getTokenRepository();
     }
 
     public function testCreateToken(): void
     {
         $payload = $this->getPayload();
-        $token = $this->tokenManager->createToken($payload);
+        $token = $this->tokenFactory->createToken($payload, CompactSerializer::NAME);
         $this->assertIsString($token);
-    }
-
-    public function testGetClaims(): void
-    {
-        $payload = $this->getPayload();
-        $token = $this->tokenManager->createToken($payload);
-        $claims = $this->tokenManager->getClaims($token);
-        $this->assertSame($payload, $claims);
-        $this->assertEquals($claims['sub'], $payload['sub']);
-    }
-
-    public function testEmptyPayload(): void
-    {
-        $payload = [];
-        $token = $this->tokenManager->createToken($payload);
-        $claims = $this->tokenManager->getClaims($token);
-        $this->assertEmpty($claims);
     }
 
     public function testWrongKeyToken(): void
     {
         $payload = [];
-        $token = (new TokenFactory(self::SECRET . 'wrong'))->createToken($payload);
-        $claims = $this->tokenManager->getClaims($token);
+        $token = (new TokenFactory(
+            new FromSecret(self::SECRET . 'wrong'),
+            $this->getAlgorithmManager(),
+            $this->getSerializerManager()
+        ))->createToken($payload, CompactSerializer::NAME);
+        $claims = $this->tokenRepository->getClaims($token);
         $this->assertNull($claims);
-    }
-
-    public function testImmutability(): void
-    {
-        $original = new TokenFactory(self::SECRET);
-
-        $this->assertNotSame($original, $original->withAlgorithms([new ES256()]));
-        $this->assertNotSame($original, $original->withSecret('another-secret'));
-        $this->assertNotSame($original, $original->withSerializer(new JSONGeneralSerializer()));
-    }
-
-    public function testWithCustomAlgorithms(): void
-    {
-        $payload = $this->getPayload();
-        $token = $this->tokenManager->withAlgorithms([new HS384()])->createToken($payload);
-        $this->assertIsString($token);
-    }
-
-    public function testWithCustomSerializer(): void
-    {
-        $payload = $this->getPayload();
-        $token = $this->tokenManager->withSerializer(new JSONFlattenedSerializer())->createToken($payload);
-        $this->assertIsString($token);
-    }
-
-    public function testWithCustomSecret(): void
-    {
-        $payload = $this->getPayload();
-        $secret = 'adg$#fv4ggsg5g5EG%h5shgsdsh55eggb4shjtj6sw5hesvd0h5h';
-        $token = $this->tokenManager->withSecret($secret)->createToken($payload);
-        $this->assertIsString($token);
     }
 
     private function getPayload(): array

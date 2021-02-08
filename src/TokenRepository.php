@@ -54,6 +54,7 @@ final class TokenRepository implements TokenRepositoryInterface
         $jwk = $this->keyFactory->create();
 
         foreach ($this->algorithmManager->list() as $index => $algorithm) {
+            /** @var int $index */
             if ($this->verifyToken($jws, $jwk, $index)) {
                 /** @var array<array-key, mixed>|null */
                 return Json::decode($jws->getPayload() ?? '');

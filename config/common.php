@@ -35,5 +35,5 @@ return [
         return $injector->make(JWSSerializerManager::class, ['serializers' => $serializers]);
     },
     TokenFactoryInterface::class => TokenFactory::class,
-    TokenRepositoryInterface::class => TokenRepository::class
+    TokenRepositoryInterface::class => TokenRepository::class,
 ];

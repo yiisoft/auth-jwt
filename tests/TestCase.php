@@ -4,26 +4,18 @@ declare(strict_types=1);
 
 namespace Yiisoft\Auth\Jwt\Tests;
 
-use Jose\Component\Checker\InvalidClaimException;
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Signature\Algorithm\HS256;
-use Jose\Component\Signature\Algorithm\RS256;
 use Jose\Component\Signature\Serializer\CompactSerializer;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
-use Nyholm\Psr7\Response;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use Yiisoft\Auth\IdentityInterface;
-use Yiisoft\Auth\Jwt\JwtMethod;
 use Yiisoft\Auth\Jwt\KeyFactory\FromSecret;
-use Yiisoft\Auth\Jwt\Tests\Stub\FakeIdentity;
-use Yiisoft\Auth\Jwt\Tests\Stub\FakeIdentityRepository;
 use Yiisoft\Auth\Jwt\TokenFactory;
 use Yiisoft\Auth\Jwt\TokenFactoryInterface;
 use Yiisoft\Auth\Jwt\TokenRepository;
 use Yiisoft\Auth\Jwt\TokenRepositoryInterface;
-use Yiisoft\Http\Header;
 use Yiisoft\Http\Method;
 
 class TestCase extends BaseTestCase

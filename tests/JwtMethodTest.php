@@ -128,5 +128,4 @@ class JwtMethodTest extends TestCase
             'aud' => 'Yii 3',
         ];
     }
-
 }

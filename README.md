@@ -33,10 +33,19 @@ composer require yiisoft/auth-jwt --prefer-dist
 
 ### Configuring within Yii
 
-1. Set JWT secret in your `params.php` config file:
+1. Set JWT parameters in your `params.php` config file:
     ```php
     'yiisoft/auth-jwt' => [
-        'secret' => 'your-secret'
+        'algorithms' => [
+            // your signature algorithms
+        ],
+        'serializers' => [
+            // your token serializers
+        ],
+        'key' => [
+            'secret' => 'your-secret',
+            'file' => 'your-certificate-file',
+        ],
     ],
     ```
 2. Setup definitions, required for `\Yiisoft\Auth\Middleware\Authentication` middleware in a config, for example,
@@ -54,10 +63,10 @@ composer require yiisoft/auth-jwt --prefer-dist
    use Yiisoft\Auth\Jwt\JwtMethod;
    
    return [
-       TokenManagerInterface::class => [
-           '__class' => TokenManager::class,
+       KeyFactoryInterface::class => [
+           '__class' => FromSecret::class,
            '__construct()' => [
-               'secret' => $params['yiisoft/auth-jwt']['secret']
+               $params['yiisoft/auth-jwt']['key']['secret']
            ],
        ],
        
@@ -77,9 +86,9 @@ You can configure `Authentication` middleware manually:
 /** @var \Yiisoft\Auth\IdentityRepositoryInterface $identityRepository */
 $identityRepository = getIdentityRepository();
 
-$tokenManager = $container->get(\Yiisoft\Auth\Jwt\TokenFactoryInterface::class);
+$tokenRepository = $container->get(\Yiisoft\Auth\Jwt\TokenRepositoryInterface::class);
 
-$authenticationMethod = new \Yiisoft\Auth\Jwt\JwtMethod($identityRepository, $tokenManager);
+$authenticationMethod = new \Yiisoft\Auth\Jwt\JwtMethod($identityRepository, $tokenRepository);
 
 $middleware = new \Yiisoft\Auth\Middleware\Authentication(
     $authenticationMethod,
@@ -101,7 +110,7 @@ The package is tested with [PHPUnit](https://phpunit.de/). To run tests:
 The package tests are checked with [Infection](https://infection.github.io/) mutation framework. To run it:
 
 ```shell
-./vendor/bin/infection
+./vendor/bin/roave-infection-static-analysis-plugin
 ```
 
 ## Static analysis

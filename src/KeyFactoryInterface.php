@@ -14,7 +14,7 @@ use Jose\Component\Core\JWK;
 interface KeyFactoryInterface
 {
     /**
-     * Create a token with the payload specified.
+     * Create a key with additional values.
      *
      * @param array $additionalValues
      *

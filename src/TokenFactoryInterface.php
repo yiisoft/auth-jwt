@@ -13,8 +13,8 @@ interface TokenFactoryInterface
      * Create a token with the payload specified.
      *
      * @param array $payload Payload to make a part of the token.
-     * @param string $format The serialize format.
-     * @param int|null $signatureIndex
+     * @param string $format Serialization format.
+     * @param int|null $signatureIndex The signature index for serialization.
      *
      * @return string Token.
      */

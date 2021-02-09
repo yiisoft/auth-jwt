@@ -22,14 +22,14 @@ return [
     ],
     AlgorithmManager::class => static function (Injector $injector) use ($params) {
         $algorithms = array_map(
-            static fn ($algorithm) => $injector->make($algorithm),
+            static fn ($algorithm) => is_string($algorithm) ? $injector->make($algorithm) : $algorithm,
             $params['yiisoft/auth-jwt']['algorithms'] ?? []
         );
         return $injector->make(AlgorithmManager::class, ['algorithms' => $algorithms]);
     },
     JWSSerializerManager::class => static function (Injector $injector) use ($params) {
         $serializers = array_map(
-            static fn ($serializer) => $injector->make($serializer),
+            static fn ($serializer) => is_string($serializer) ? $injector->make($serializer) : $serializer,
             $params['yiisoft/auth-jwt']['serializers'] ?? []
         );
         return $injector->make(JWSSerializerManager::class, ['serializers' => $serializers]);

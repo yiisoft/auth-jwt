@@ -8,6 +8,7 @@ use Jose\Component\Core\JWK;
 use Jose\Component\KeyManagement\JWKFactory;
 use Yiisoft\Auth\Jwt\KeyFactoryInterface;
 
+// @codeCoverageIgnore
 final class FromPKCS12CertificateFile implements KeyFactoryInterface
 {
     private string $file;

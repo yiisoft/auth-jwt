@@ -6,12 +6,15 @@ namespace Yiisoft\Auth\Jwt\Tests;
 
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Signature\Algorithm\HS256;
+use Jose\Component\Signature\Algorithm\RS256;
 use Jose\Component\Signature\Serializer\CompactSerializer;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Yiisoft\Auth\Jwt\KeyFactory\FromKeyFile;
 use Yiisoft\Auth\Jwt\KeyFactory\FromSecret;
+use Yiisoft\Auth\Jwt\KeyFactoryInterface;
 use Yiisoft\Auth\Jwt\TokenFactory;
 use Yiisoft\Auth\Jwt\TokenFactoryInterface;
 use Yiisoft\Auth\Jwt\TokenRepository;
@@ -37,7 +40,7 @@ class TestCase extends BaseTestCase
         return new TokenFactory($this->getKeyFactory(), $this->getAlgorithmManager(), $this->getSerializerManager());
     }
 
-    protected function getKeyFactory(): FromSecret
+    protected function getKeyFactory(): KeyFactoryInterface
     {
         return new FromSecret(self::SECRET);
     }

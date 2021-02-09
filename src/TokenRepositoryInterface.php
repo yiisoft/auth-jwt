@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Auth\Jwt;
 
 /**
- * Token repository is getting a list of claims for it.
+ * Token repository is getting a list of claims for a token.
+ * This implementation signs a token with JSON Web Signature.
  */
 interface TokenRepositoryInterface
 {

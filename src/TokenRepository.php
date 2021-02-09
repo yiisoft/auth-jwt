@@ -11,10 +11,6 @@ use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Yiisoft\Json\Json;
 
-/**
- * Token manager creates a token and is getting a list of clams for it.
- * This implementation signs a token with JSON Web Signature.
- */
 final class TokenRepository implements TokenRepositoryInterface
 {
     private KeyFactoryInterface $keyFactory;

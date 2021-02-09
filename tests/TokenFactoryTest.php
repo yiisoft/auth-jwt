@@ -26,7 +26,7 @@ class TokenFactoryTest extends TestCase
     public function testCreateToken(): void
     {
         $payload = $this->getPayload();
-        $token = $this->tokenFactory->createToken($payload, CompactSerializer::NAME);
+        $token = $this->tokenFactory->create($payload, CompactSerializer::NAME);
         $this->assertIsString($token);
     }
 
@@ -37,7 +37,7 @@ class TokenFactoryTest extends TestCase
             new FromSecret(self::SECRET . 'wrong'),
             $this->getAlgorithmManager(),
             $this->getSerializerManager()
-        ))->createToken($payload, CompactSerializer::NAME);
+        ))->create($payload, CompactSerializer::NAME);
         $claims = $this->tokenRepository->getClaims($token);
         $this->assertNull($claims);
     }

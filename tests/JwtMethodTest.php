@@ -19,7 +19,7 @@ class JwtMethodTest extends TestCase
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity());
         $tokenManager = $this->getTokenFactory();
-        $token = $tokenManager->createToken($this->getPayload(), CompactSerializer::NAME);
+        $token = $tokenManager->create($this->getPayload(), CompactSerializer::NAME);
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
         );
@@ -33,7 +33,7 @@ class JwtMethodTest extends TestCase
         $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));
         $tokenManager = $this->getTokenFactory();
         $payload = $this->getPayload();
-        $token = $tokenManager->createToken($payload, CompactSerializer::NAME);
+        $token = $tokenManager->create($payload, CompactSerializer::NAME);
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
         );
@@ -46,7 +46,7 @@ class JwtMethodTest extends TestCase
         $identityRepository = new FakeIdentityRepository($this->createIdentity());
         $tokenFactory = $this->getTokenFactory();
         $payload = $this->getPayload();
-        $token = $tokenFactory->createToken($payload, CompactSerializer::NAME);
+        $token = $tokenFactory->create($payload, CompactSerializer::NAME);
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest()->withQueryParams(['access-token' => $token])
         );
@@ -69,7 +69,7 @@ class JwtMethodTest extends TestCase
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));
         $tokenManager = $this->getTokenFactory();
-        $token = $tokenManager->createToken([], CompactSerializer::NAME);
+        $token = $tokenManager->create([], CompactSerializer::NAME);
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest()->withQueryParams(['access-token' => $token])
         );
@@ -95,7 +95,7 @@ class JwtMethodTest extends TestCase
         $tokenFactory = $this->getTokenFactory();
         $payload = $this->getPayload();
         $payload['exp'] = time() - 1;
-        $token = $tokenFactory->createToken($payload, CompactSerializer::NAME);
+        $token = $tokenFactory->create($payload, CompactSerializer::NAME);
         (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
         );

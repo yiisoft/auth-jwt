@@ -23,7 +23,7 @@ class TokenRepositoryTest extends TestCase
     public function testGetClaims(): void
     {
         $payload = $this->getPayload();
-        $token = $this->tokenFactory->createToken($payload, CompactSerializer::NAME);
+        $token = $this->tokenFactory->create($payload, CompactSerializer::NAME);
         $claims = $this->tokenRepository->getClaims($token);
         $this->assertSame($payload, $claims);
         $this->assertEquals($claims['sub'], $payload['sub']);
@@ -32,7 +32,7 @@ class TokenRepositoryTest extends TestCase
     public function testEmptyPayload(): void
     {
         $payload = [];
-        $token = $this->tokenFactory->createToken($payload, CompactSerializer::NAME);
+        $token = $this->tokenFactory->create($payload, CompactSerializer::NAME);
         $claims = $this->tokenRepository->getClaims($token);
         $this->assertEmpty($claims);
     }

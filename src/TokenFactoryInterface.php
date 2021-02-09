@@ -18,5 +18,5 @@ interface TokenFactoryInterface
      *
      * @return string Token.
      */
-    public function createToken(array $payload, string $format, ?int $signatureIndex = null): string;
+    public function create(array $payload, string $format, ?int $signatureIndex = null): string;
 }

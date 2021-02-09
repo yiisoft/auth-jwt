@@ -46,7 +46,7 @@ final class TokenFactory implements TokenFactoryInterface
         $this->serializerManager = $serializerManager;
     }
 
-    public function createToken(array $payload, string $format, ?int $signatureIndex = null): string
+    public function create(array $payload, string $format, ?int $signatureIndex = null): string
     {
         $jwsBuilder = new JWSBuilder($this->algorithmManager);
         $jws = $jwsBuilder->create()->withPayload(Json::encode($payload));

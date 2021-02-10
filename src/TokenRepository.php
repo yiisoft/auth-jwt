@@ -11,6 +11,10 @@ use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Yiisoft\Json\Json;
 
+/**
+ * Token repository is getting a list of claims for a token.
+ * The token JWS is being verified before doing so.
+ */
 final class TokenRepository implements TokenRepositoryInterface
 {
     private KeyFactoryInterface $keyFactory;

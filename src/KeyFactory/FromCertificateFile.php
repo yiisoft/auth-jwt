@@ -9,6 +9,8 @@ use Jose\Component\KeyManagement\JWKFactory;
 use Yiisoft\Auth\Jwt\KeyFactoryInterface;
 
 /**
+ * Creates JWK from a certificate file.
+ *
  * @codeCoverageIgnore
  */
 final class FromCertificateFile implements KeyFactoryInterface

@@ -8,6 +8,9 @@ use Jose\Component\Core\JWK;
 use Jose\Component\KeyManagement\JWKFactory;
 use Yiisoft\Auth\Jwt\KeyFactoryInterface;
 
+/**
+ * Creates JWK from a secret.
+ */
 final class FromSecret implements KeyFactoryInterface
 {
     private string $secret;

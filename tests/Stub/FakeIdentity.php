@@ -6,7 +6,7 @@ namespace Yiisoft\Auth\Jwt\Tests\Stub;
 
 use Yiisoft\Auth\IdentityInterface;
 
-class FakeIdentity implements IdentityInterface
+final class FakeIdentity implements IdentityInterface
 {
     private ?string $id;
 

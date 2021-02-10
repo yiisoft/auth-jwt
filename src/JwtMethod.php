@@ -36,20 +36,20 @@ final class JwtMethod implements AuthenticationMethodInterface
     private array $claimCheckers;
 
     private IdentityRepositoryInterface $identityRepository;
-    private TokenManagerInterface $tokenManager;
+    private TokenRepositoryInterface $tokenRepository;
 
     /**
      * @param IdentityRepositoryInterface $identityRepository Repository to get identity from.
-     * @param TokenManagerInterface $tokenManager Token manager to obtain claims from.
+     * @param TokenRepositoryInterface $tokenRepository Token manager to obtain claims from.
      * @param ClaimChecker[]|null $claimCheckers Claim checkers. If not specified, {@see ExpirationTimeChecker} is used.
      */
     public function __construct(
         IdentityRepositoryInterface $identityRepository,
-        TokenManagerInterface $tokenManager,
+        TokenRepositoryInterface $tokenRepository,
         ?array $claimCheckers = null
     ) {
         $this->identityRepository = $identityRepository;
-        $this->tokenManager = $tokenManager;
+        $this->tokenRepository = $tokenRepository;
         $this->claimCheckers = $claimCheckers ?? [new ExpirationTimeChecker()];
     }
 
@@ -60,7 +60,7 @@ final class JwtMethod implements AuthenticationMethodInterface
             return null;
         }
 
-        $claims = $this->tokenManager->getClaims($token);
+        $claims = $this->tokenRepository->getClaims($token, $name);
         if ($claims === null || !isset($claims[$this->identifier])) {
             return null;
         }

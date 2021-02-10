@@ -10,6 +10,7 @@ use Yiisoft\Auth\Jwt\KeyFactoryInterface;
 
 /**
  * Creates JWK from a PKCS12 certificate file.
+ *
  * @codeCoverageIgnore
  */
 final class FromPKCS12CertificateFile implements KeyFactoryInterface

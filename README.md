@@ -92,8 +92,8 @@ $authenticationMethod = new \Yiisoft\Auth\Jwt\JwtMethod($identityRepository, $to
 
 $middleware = new \Yiisoft\Auth\Middleware\Authentication(
     $authenticationMethod,
-    $responseFactory, // PSR-17 ResponseFactoryInterface
-    $failureHandler // optional, \Yiisoft\Auth\Handler\AuthenticationFailureHandler by default
+    $responseFactory, // PSR-17 ResponseFactoryInterface.
+    $failureHandler // Optional, \Yiisoft\Auth\Handler\AuthenticationFailureHandler by default.
 );
 ```
 

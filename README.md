@@ -64,7 +64,7 @@ composer require yiisoft/auth-jwt --prefer-dist
    
    return [
        KeyFactoryInterface::class => [
-           '__class' => FromSecret::class,
+           'class' => FromSecret::class,
            '__construct()' => [
                $params['yiisoft/auth-jwt']['key']['secret']
            ],

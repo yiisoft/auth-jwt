@@ -17,7 +17,7 @@ use Yiisoft\Injector\Injector;
  */
 return [
     KeyFactoryInterface::class => [
-        '__class' => FromSecret::class,
+        'class' => FromSecret::class,
         '__construct()' => [$params['yiisoft/auth-jwt']['key']['secret']],
     ],
     AlgorithmManager::class => static function (Injector $injector) use ($params) {

@@ -1,6 +1,11 @@
 # Yii Auth JWT Change Log
 
 
+## 1.0.3 under development
+
+- no changes in this release.
+
+
 ## 1.0.2 April 13, 2021
 
 - Chg: Adjust config for yiisoft/factory changes (samdark)

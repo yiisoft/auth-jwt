@@ -3,8 +3,7 @@
 
 ## 1.0.2 under development
 
-- no changes in this release.
-
+- Chg: Adjust config for yiisoft/factory changes (samdark)
 
 ## 1.0.1 March 23, 2021
 

@@ -3,7 +3,7 @@
 
 ## 1.0.3 under development
 
-- no changes in this release.
+- Fix: Added exception handling in TokenRepository::getClaims() with invalid token string (strorch)
 
 
 ## 1.0.2 April 13, 2021

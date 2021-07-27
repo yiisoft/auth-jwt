@@ -1,6 +1,11 @@
 # Yii Auth JWT Change Log
 
 
+## 1.0.4 under development
+
+- no changes in this release.
+
+
 ## 1.0.3 July 27, 2021
 
 - Fix #43: Added exception handling in TokenRepository::getClaims() with invalid token string (strorch)

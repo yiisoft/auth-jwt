@@ -29,6 +29,12 @@ class TokenRepositoryTest extends TestCase
         $this->assertEquals($claims['sub'], $payload['sub']);
     }
 
+    public function testInvalidClaims(): void
+    {
+        $claims = $this->tokenRepository->getClaims('invalid.test.string');
+        $this->assertSame(null, $claims);
+    }
+
     public function testEmptyPayload(): void
     {
         $payload = [];

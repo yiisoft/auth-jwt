@@ -50,10 +50,15 @@ final class TokenRepository implements TokenRepositoryInterface
 
     public function getClaims(string $token, ?string &$format = null): ?array
     {
-        $jws = $this->serializerManager->unserialize($token, $format);
+        try {
+            $jws = $this->serializerManager->unserialize($token, $format);
+        } catch (\InvalidArgumentException $e) {
+            return null;
+        }
+
         $jwk = $this->keyFactory->create();
 
-        foreach ($this->algorithmManager->list() as $index => $algorithm) {
+        foreach ($this->algorithmManager->list() as $index => $_algorithm) {
             /** @var int $index */
             if ($this->verifyToken($jws, $jwk, $index)) {
                 /** @var array<array-key, mixed>|null */

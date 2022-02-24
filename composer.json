@@ -24,7 +24,7 @@
         "web-token/jwt-key-mgmt": "~2.2",
         "web-token/jwt-signature": "~2.2",
         "web-token/jwt-signature-algorithm-ecdsa": "~2.2",
-        "web-token/jwt-signature-algorithm-hmac": "~2.2",
+        "web-token/jwt-signature-algorithm-hmac": "~3.0",
         "web-token/jwt-signature-algorithm-rsa": "~2.2",
         "yiisoft/auth": "^3.0",
         "yiisoft/json": "^1.0"

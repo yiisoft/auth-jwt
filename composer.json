@@ -19,13 +19,13 @@
         "source": "https://github.com/yiisoft/auth-jwt"
     },
     "require": {
-        "php": "^7.4|^8.0",
-        "web-token/jwt-checker": "~2.2",
-        "web-token/jwt-key-mgmt": "~2.2",
-        "web-token/jwt-signature": "~2.2",
-        "web-token/jwt-signature-algorithm-ecdsa": "~2.2",
-        "web-token/jwt-signature-algorithm-hmac": "~2.2",
-        "web-token/jwt-signature-algorithm-rsa": "~2.2",
+        "php": "^7.4|^8.0|^8.1",
+        "web-token/jwt-checker": "~2.2|~3.0",
+        "web-token/jwt-key-mgmt": "~2.2|~3.0",
+        "web-token/jwt-signature": "~2.2|~3.0",
+        "web-token/jwt-signature-algorithm-ecdsa": "~2.2|~3.0",
+        "web-token/jwt-signature-algorithm-hmac": "~2.2|~3.0",
+        "web-token/jwt-signature-algorithm-rsa": "~2.2|~3.0",
         "yiisoft/auth": "^3.0",
         "yiisoft/json": "^1.0"
     },

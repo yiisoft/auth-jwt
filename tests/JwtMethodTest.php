@@ -48,7 +48,9 @@ class JwtMethodTest extends TestCase
         $payload = $this->getPayload();
         $token = $tokenFactory->create($payload, CompactSerializer::NAME);
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
-            $this->createRequest()->withQueryParams(['access-token' => $token])
+            $this
+                ->createRequest()
+                ->withQueryParams(['access-token' => $token])
         );
 
         $this->assertNotNull($result);
@@ -71,7 +73,9 @@ class JwtMethodTest extends TestCase
         $tokenManager = $this->getTokenFactory();
         $token = $tokenManager->create([], CompactSerializer::NAME);
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
-            $this->createRequest()->withQueryParams(['access-token' => $token])
+            $this
+                ->createRequest()
+                ->withQueryParams(['access-token' => $token])
         );
 
         $this->assertNull($result);
@@ -83,8 +87,12 @@ class JwtMethodTest extends TestCase
         $identityRepository = new FakeIdentityRepository($this->createIdentity());
         $authenticationMethod = new JwtMethod($identityRepository, $this->getTokenRepository());
 
-        $this->assertEquals(400, $authenticationMethod->challenge($response)->getStatusCode());
-        $this->assertNotEmpty($authenticationMethod->challenge($response)->getHeaderLine(Header::WWW_AUTHENTICATE));
+        $this->assertEquals(400, $authenticationMethod
+            ->challenge($response)
+            ->getStatusCode());
+        $this->assertNotEmpty($authenticationMethod
+            ->challenge($response)
+            ->getHeaderLine(Header::WWW_AUTHENTICATE));
     }
 
     public function testCheckTokenIsExpired(): void

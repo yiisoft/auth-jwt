@@ -48,7 +48,9 @@ final class TokenFactory implements TokenFactoryInterface
     public function create(array $payload, string $format, ?int $signatureIndex = null): string
     {
         $jwsBuilder = new JWSBuilder($this->algorithmManager);
-        $jws = $jwsBuilder->create()->withPayload(Json::encode($payload));
+        $jws = $jwsBuilder
+            ->create()
+            ->withPayload(Json::encode($payload));
         $jwk = $this->keyFactory->create();
 
         foreach ($this->algorithmManager->list() as $algorithm) {

@@ -65,7 +65,9 @@ final class JwtMethod implements AuthenticationMethodInterface
             return null;
         }
 
-        $this->getClaimCheckerManager()->check($claims);
+        $this
+            ->getClaimCheckerManager()
+            ->check($claims);
         return $this->identityRepository->findIdentity((string)$claims[$this->identifier]);
     }
 

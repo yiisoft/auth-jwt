@@ -14,35 +14,26 @@ use Yiisoft\Json\Json;
  */
 final class TokenFactory implements TokenFactoryInterface
 {
-    private KeyFactoryInterface $keyFactory;
-
-    /**
-     * @param AlgorithmManager $algorithmManager Algorithms manager for signing JSON Web Signature.
-     *
-     * @see https://tools.ietf.org/html/rfc7515
-     */
-    private AlgorithmManager $algorithmManager;
-
-    /**
-     * @param JWSSerializerManager $serializerManager JSON Web Signature serializer manager.
-     *
-     * @see https://tools.ietf.org/html/rfc7515
-     */
-    private JWSSerializerManager $serializerManager;
-
     /**
      * @param KeyFactoryInterface $keyFactory A factory to create a JSON Web Key.
      * @param AlgorithmManager $algorithmManager Algorithms manager for signing JSON Web Signature.
      * @param JWSSerializerManager $serializerManager JSON Web Signature serializer manager.
      */
     public function __construct(
-        KeyFactoryInterface $keyFactory,
-        AlgorithmManager $algorithmManager,
-        JWSSerializerManager $serializerManager
+        private KeyFactoryInterface $keyFactory,
+        /**
+         * @param AlgorithmManager $algorithmManager Algorithms manager for signing JSON Web Signature.
+         *
+         * @see https://tools.ietf.org/html/rfc7515
+         */
+        private AlgorithmManager $algorithmManager,
+        /**
+         * @param JWSSerializerManager $serializerManager JSON Web Signature serializer manager.
+         *
+         * @see https://tools.ietf.org/html/rfc7515
+         */
+        private JWSSerializerManager $serializerManager
     ) {
-        $this->keyFactory = $keyFactory;
-        $this->algorithmManager = $algorithmManager;
-        $this->serializerManager = $serializerManager;
     }
 
     public function create(array $payload, string $format, ?int $signatureIndex = null): string

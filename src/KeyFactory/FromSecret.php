@@ -13,11 +13,8 @@ use Yiisoft\Auth\Jwt\KeyFactoryInterface;
  */
 final class FromSecret implements KeyFactoryInterface
 {
-    private string $secret;
-
-    public function __construct(string $secret)
+    public function __construct(private string $secret)
     {
-        $this->secret = $secret;
     }
 
     public function create(array $additionalValues = []): JWK

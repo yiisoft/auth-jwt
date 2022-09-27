@@ -33,8 +33,7 @@ final class TokenFactory implements TokenFactoryInterface
          * @see https://tools.ietf.org/html/rfc7515
          */
         private JWSSerializerManager $serializerManager
-    )
-    {
+    ) {
     }
 
     public function create(array $payload, string $format, ?int $signatureIndex = null): string

@@ -36,8 +36,7 @@ final class TokenRepository implements TokenRepositoryInterface
          * @see https://tools.ietf.org/html/rfc7515
          */
         private JWSSerializerManager $serializerManager
-    )
-    {
+    ) {
     }
 
     public function getClaims(string $token, ?string &$format = null): ?array

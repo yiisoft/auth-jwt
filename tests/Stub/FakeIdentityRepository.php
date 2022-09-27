@@ -9,7 +9,7 @@ use Yiisoft\Auth\IdentityRepositoryInterface;
 
 final class FakeIdentityRepository implements IdentityRepositoryInterface
 {
-    public function __construct(private ?\Yiisoft\Auth\IdentityInterface $returnIdentity)
+    public function __construct(private ?IdentityInterface $returnIdentity)
     {
     }
 

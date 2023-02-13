@@ -1,5 +1,9 @@
 # Yii Auth JWT Change Log
 
+## 2.0.1 under development
+
+- no changes in this release.
+
 ## 2.0.0 February 13, 2023
 
 - Chg #59: Adapt configuration group names to Yii conventions (@vjik)

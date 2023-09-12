@@ -2,7 +2,7 @@
 
 ## 2.0.1 under development
 
-- no changes in this release.
+- Bug #53: Add missed dependencies `psr/http-message`, `yiisoft/http` and `web-token/jwt-core` (@vjik)
 
 ## 2.0.0 February 13, 2023
 

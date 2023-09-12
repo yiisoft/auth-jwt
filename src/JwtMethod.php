@@ -13,6 +13,7 @@ use Yiisoft\Auth\AuthenticationMethodInterface;
 use Yiisoft\Auth\IdentityInterface;
 use Yiisoft\Auth\IdentityRepositoryInterface;
 use Yiisoft\Http\Header;
+
 use function is_string;
 use function reset;
 
@@ -26,7 +27,12 @@ final class JwtMethod implements AuthenticationMethodInterface
 {
     private string $headerName = Header::AUTHORIZATION;
     private string $queryParameterName = 'access-token';
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private string $headerTokenPattern = '/^Bearer\s+(.*?)$/';
+
     private string $realm = 'api';
     private string $identifier = 'sub';
 
@@ -122,7 +128,7 @@ final class JwtMethod implements AuthenticationMethodInterface
      * @param string $headerTokenPattern Regular expression to use for getting a token from authorization header.
      * Token value should match first capturing group.
      *
-     * @return self
+     * @psalm-param non-empty-string $headerTokenPattern
      */
     public function withHeaderTokenPattern(string $headerTokenPattern): self
     {

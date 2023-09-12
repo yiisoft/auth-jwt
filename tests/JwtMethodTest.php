@@ -97,16 +97,17 @@ class JwtMethodTest extends TestCase
 
     public function testCheckTokenIsExpired(): void
     {
-        $this->expectException(InvalidClaimException::class);
-        $this->expectErrorMessage('The token expired.');
         $identityRepository = new FakeIdentityRepository($this->createIdentity());
         $tokenFactory = $this->getTokenFactory();
         $payload = $this->getPayload();
         $payload['exp'] = time() - 1;
         $token = $tokenFactory->create($payload, CompactSerializer::NAME);
-        (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
-            $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
-        );
+        $jwtMethod = new JwtMethod($identityRepository, $this->getTokenRepository());
+        $request = $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token]);
+
+        $this->expectException(InvalidClaimException::class);
+        $this->expectExceptionMessage('The token expired.');
+        $jwtMethod->authenticate($request);
     }
 
     public function testImmutability(): void

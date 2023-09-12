@@ -15,8 +15,13 @@ use Yiisoft\Auth\Jwt\KeyFactoryInterface;
  */
 final class FromKeyFile implements KeyFactoryInterface
 {
-    public function __construct(private string $file, private string $password)
+    private string $file;
+    private string $password;
+
+    public function __construct(string $file, string $password)
     {
+        $this->file = $file;
+        $this->password = $password;
     }
 
     public function create(array $additionalValues = []): JWK

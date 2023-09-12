@@ -15,8 +15,13 @@ use Yiisoft\Auth\Jwt\KeyFactoryInterface;
  */
 final class FromPKCS12CertificateFile implements KeyFactoryInterface
 {
-    public function __construct(private string $file, private string $secret)
+    private string $file;
+    private string $secret;
+
+    public function __construct(string $file, string $secret)
     {
+        $this->file = $file;
+        $this->secret = $secret;
     }
 
     public function create(array $additionalValues = []): JWK

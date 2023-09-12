@@ -36,16 +36,21 @@ final class JwtMethod implements AuthenticationMethodInterface
      */
     private array $claimCheckers;
 
+    private IdentityRepositoryInterface $identityRepository;
+    private TokenRepositoryInterface $tokenRepository;
+
     /**
      * @param IdentityRepositoryInterface $identityRepository Repository to get identity from.
      * @param TokenRepositoryInterface $tokenRepository Token manager to obtain claims from.
      * @param ClaimChecker[]|null $claimCheckers Claim checkers. If not specified, {@see ExpirationTimeChecker} is used.
      */
     public function __construct(
-        private IdentityRepositoryInterface $identityRepository,
-        private TokenRepositoryInterface $tokenRepository,
+        IdentityRepositoryInterface $identityRepository,
+        TokenRepositoryInterface $tokenRepository,
         ?array $claimCheckers = null
     ) {
+        $this->identityRepository = $identityRepository;
+        $this->tokenRepository = $tokenRepository;
         $this->claimCheckers = $claimCheckers ?? [new ExpirationTimeChecker()];
     }
 
@@ -92,6 +97,8 @@ final class JwtMethod implements AuthenticationMethodInterface
 
     /**
      * @param string $realm The HTTP authentication realm.
+     *
+     * @return self
      */
     public function withRealm(string $realm): self
     {
@@ -102,6 +109,8 @@ final class JwtMethod implements AuthenticationMethodInterface
 
     /**
      * @param string $headerName Authorization header name.
+     *
+     * @return self
      */
     public function withHeaderName(string $headerName): self
     {
@@ -113,6 +122,8 @@ final class JwtMethod implements AuthenticationMethodInterface
     /**
      * @param string $headerTokenPattern Regular expression to use for getting a token from authorization header.
      * Token value should match first capturing group.
+     *
+     * @return self
      */
     public function withHeaderTokenPattern(string $headerTokenPattern): self
     {
@@ -123,6 +134,8 @@ final class JwtMethod implements AuthenticationMethodInterface
 
     /**
      * @param string $queryParameterName Request parameter name to check for a token.
+     *
+     * @return self
      */
     public function withQueryParameterName(string $queryParameterName): self
     {
@@ -133,6 +146,8 @@ final class JwtMethod implements AuthenticationMethodInterface
 
     /**
      * @param string $identifier Identifier to check claims for.
+     *
+     * @return self
      */
     public function withIdentifier(string $identifier): self
     {

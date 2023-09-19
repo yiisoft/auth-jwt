@@ -1,5 +1,9 @@
 # Yii Auth JWT Change Log
 
+## 2.0.2 under development
+
+- no changes in this release.
+
 ## 2.0.1 September 19, 2023
 
 - Bug #53: Add missed dependencies `psr/http-message`, `yiisoft/http` and `web-token/jwt-core` (@vjik)

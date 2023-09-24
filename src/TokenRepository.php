@@ -21,9 +21,14 @@ final class TokenRepository implements TokenRepositoryInterface
      * @param KeyFactoryInterface $keyFactory A factory to create a JSON Web Key.
      * @param AlgorithmManager $algorithmManager Algorithms manager for signing JSON Web Signature.
      * @param JWSSerializerManager $serializerManager JSON Web Signature serializer manager.
+     *
+     * @see https://tools.ietf.org/html/rfc7515
      */
-    public function __construct(private KeyFactoryInterface $keyFactory, private AlgorithmManager $algorithmManager, private JWSSerializerManager $serializerManager)
-    {
+    public function __construct(
+        private KeyFactoryInterface $keyFactory,
+        private AlgorithmManager $algorithmManager,
+        private JWSSerializerManager $serializerManager
+    ) {
     }
 
     public function getClaims(string $token, ?string &$format = null): ?array
@@ -48,8 +53,6 @@ final class TokenRepository implements TokenRepositoryInterface
 
     private function verifyToken(JWS $jws, JWK $jwk, int $signature = 0): bool
     {
-        $jwsVerifier = new JWSVerifier($this->algorithmManager);
-
-        return $jwsVerifier->verifyWithKey($jws, $jwk, $signature);
+        return (new JWSVerifier($this->algorithmManager))->verifyWithKey($jws, $jwk, $signature);
     }
 }

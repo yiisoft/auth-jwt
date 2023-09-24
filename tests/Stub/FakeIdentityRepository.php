@@ -9,11 +9,8 @@ use Yiisoft\Auth\IdentityRepositoryInterface;
 
 final class FakeIdentityRepository implements IdentityRepositoryInterface
 {
-    private ?IdentityInterface $returnIdentity;
-
-    public function __construct(?IdentityInterface $returnIdentity)
+    public function __construct(private ?IdentityInterface $returnIdentity)
     {
-        $this->returnIdentity = $returnIdentity;
     }
 
     public function findIdentity(string $id): ?IdentityInterface

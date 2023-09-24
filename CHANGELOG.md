@@ -1,8 +1,8 @@
 # Yii Auth JWT Change Log
 
-## 2.0.2 under development
+## 2.1.0 under development
 
-- no changes in this release.
+- Chg: #67: Bump required PHP version to 8.0 (@rustamwin)
 
 ## 2.0.1 September 19, 2023
 

@@ -17,42 +17,25 @@ use Yiisoft\Json\Json;
  */
 final class TokenRepository implements TokenRepositoryInterface
 {
-    private KeyFactoryInterface $keyFactory;
-
-    /**
-     * @param AlgorithmManager $algorithmManager Algorithms manager for signing JSON Web Signature.
-     *
-     * @see https://tools.ietf.org/html/rfc7515
-     */
-    private AlgorithmManager $algorithmManager;
-
-    /**
-     * @param JWSSerializerManager $serializerManager JSON Web Signature serializer manager.
-     *
-     * @see https://tools.ietf.org/html/rfc7515
-     */
-    private JWSSerializerManager $serializerManager;
-
     /**
      * @param KeyFactoryInterface $keyFactory A factory to create a JSON Web Key.
      * @param AlgorithmManager $algorithmManager Algorithms manager for signing JSON Web Signature.
      * @param JWSSerializerManager $serializerManager JSON Web Signature serializer manager.
+     *
+     * @see https://tools.ietf.org/html/rfc7515
      */
     public function __construct(
-        KeyFactoryInterface $keyFactory,
-        AlgorithmManager $algorithmManager,
-        JWSSerializerManager $serializerManager
+        private KeyFactoryInterface $keyFactory,
+        private AlgorithmManager $algorithmManager,
+        private JWSSerializerManager $serializerManager
     ) {
-        $this->keyFactory = $keyFactory;
-        $this->algorithmManager = $algorithmManager;
-        $this->serializerManager = $serializerManager;
     }
 
     public function getClaims(string $token, ?string &$format = null): ?array
     {
         try {
             $jws = $this->serializerManager->unserialize($token, $format);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             return null;
         }
 
@@ -70,8 +53,6 @@ final class TokenRepository implements TokenRepositoryInterface
 
     private function verifyToken(JWS $jws, JWK $jwk, int $signature = 0): bool
     {
-        $jwsVerifier = new JWSVerifier($this->algorithmManager);
-
-        return $jwsVerifier->verifyWithKey($jws, $jwk, $signature);
+        return (new JWSVerifier($this->algorithmManager))->verifyWithKey($jws, $jwk, $signature);
     }
 }

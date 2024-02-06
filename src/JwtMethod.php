@@ -80,7 +80,6 @@ final class JwtMethod implements AuthenticationMethodInterface
             return $matches[1];
         }
 
-        /** @var mixed */
         $token = $request->getQueryParams()[$this->queryParameterName] ?? null;
         return is_string($token) ? $token : null;
     }

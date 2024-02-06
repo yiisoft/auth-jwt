@@ -16,7 +16,6 @@ interface KeyFactoryInterface
     /**
      * Create a key with additional values.
      *
-     *
      * @return JWK JSON Web Key.
      */
     public function create(array $additionalValues = []): JWK;

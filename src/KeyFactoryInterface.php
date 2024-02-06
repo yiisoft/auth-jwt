@@ -16,7 +16,6 @@ interface KeyFactoryInterface
     /**
      * Create a key with additional values.
      *
-     * @param array $additionalValues
      *
      * @return JWK JSON Web Key.
      */

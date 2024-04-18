@@ -34,49 +34,53 @@ composer require yiisoft/auth-jwt
 ### Configuring within Yii
 
 1. Set JWT parameters in your `params.php` config file:
-    ```php
-    'yiisoft/auth-jwt' => [
-        'algorithms' => [
-            // your signature algorithms
-        ],
-        'serializers' => [
-            // your token serializers
-        ],
-        'key' => [
-            'secret' => 'your-secret',
-            'file' => 'your-certificate-file',
-        ],
+
+```php
+'yiisoft/auth-jwt' => [
+    'algorithms' => [
+        // your signature algorithms
     ],
-    ```
+    'serializers' => [
+        // your token serializers
+    ],
+    'key' => [
+        'secret' => 'your-secret',
+        'file' => 'your-certificate-file',
+    ],
+],
+```
+
 2. Setup definitions, required for `\Yiisoft\Auth\Middleware\Authentication` middleware in a config, for example,
    in `config/web/auth.php`:
-   ```php   
-   <?php
-   
-   declare(strict_types=1);
-   
-   /** @var array $params */
-   
-   use Yiisoft\Auth\Jwt\TokenManagerInterface;
-   use Yiisoft\Auth\Jwt\TokenManager;
-   use Yiisoft\Auth\AuthenticationMethodInterface;
-   use Yiisoft\Auth\Jwt\JwtMethod;
-   
-   return [
-       KeyFactoryInterface::class => [
-           'class' => FromSecret::class,
-           '__construct()' => [
-               $params['yiisoft/auth-jwt']['key']['secret']
-           ],
-       ],
-       
-       AuthenticationMethodInterface::class => JwtMethod::class,
-   ];
-   ```
-   > Note: Don't forget to declare your implementations of `\Yiisoft\Auth\IdentityInterface` and `\Yiisoft\Auth\IdentityRepositoryInterface`.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+/** @var array $params */
+
+use Yiisoft\Auth\Jwt\TokenManagerInterface;
+use Yiisoft\Auth\Jwt\TokenManager;
+use Yiisoft\Auth\AuthenticationMethodInterface;
+use Yiisoft\Auth\Jwt\JwtMethod;
+
+return [
+    KeyFactoryInterface::class => [
+        'class' => FromSecret::class,
+        '__construct()' => [
+            $params['yiisoft/auth-jwt']['key']['secret']
+        ],
+    ],
+    
+    AuthenticationMethodInterface::class => JwtMethod::class,
+];
+```
+
+> Note: Don't forget to declare your implementations of `\Yiisoft\Auth\IdentityInterface` and `\Yiisoft\Auth\IdentityRepositoryInterface`.
 
 3. Use `Yiisoft\Auth\Middleware\Authentication` middleware.
-   Read more about middlewares in the [middleware guide](https://github.com/yiisoft/docs/blob/master/guide/en/structure/middleware.md). 
+   Read more about middlewares in the [middleware guide](https://github.com/yiisoft/docs/blob/master/guide/en/structure/middleware.md).
 
 ### Configuring independently
 
@@ -97,34 +101,30 @@ $middleware = new \Yiisoft\Auth\Middleware\Authentication(
 );
 ```
 
-## Unit testing
+## Documentation
 
-The package is tested with [PHPUnit](https://phpunit.de/). To run tests:
+- More information can be found in the [Internals.](docs/internals.md)
 
-```shell
-./vendor/bin/phpunit
-```
+## Support
 
-## Mutation testing
+If you need help or have a question, the [Yii Forum](https://forum.yiiframework.com/c/yii-3-0/63) is a good place for that.
+You may also check out other [Yii Community Resources](https://www.yiiframework.com/community).
 
-The package tests are checked with [Infection](https://infection.github.io/) mutation framework with
-[Infection Static Analysis Plugin](https://github.com/Roave/infection-static-analysis-plugin). To run it:
+## Support the project
 
-```shell
-./vendor/bin/roave-infection-static-analysis-plugin
-```
+[![Open Collective](https://img.shields.io/badge/Open%20Collective-sponsor-7eadf1?logo=open%20collective&logoColor=7eadf1&labelColor=555555)](https://opencollective.com/yiisoft)
 
-## Static analysis
+## Follow updates
 
-The code is statically analyzed with [Psalm](https://psalm.dev/). To run static analysis:
-
-```shell
-./vendor/bin/psalm
-```
+[![Official website](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](https://www.yiiframework.com/)
+[![Twitter](https://img.shields.io/badge/twitter-follow-1DA1F2?logo=twitter&logoColor=1DA1F2&labelColor=555555?style=flat)](https://twitter.com/yiiframework)
+[![Telegram](https://img.shields.io/badge/telegram-join-1DA1F2?style=flat&logo=telegram)](https://t.me/yii3en)
+[![Facebook](https://img.shields.io/badge/facebook-join-1DA1F2?style=flat&logo=facebook&logoColor=ffffff)](https://www.facebook.com/groups/yiitalk)
+[![Slack](https://img.shields.io/badge/slack-join-1DA1F2?style=flat&logo=slack)](https://yiiframework.com/go/slack)
 
 ## License
 
-The Yii Auth JWT is free software. It is released under the terms of the BSD License.
+The Yii Access is free software. It is released under the terms of the BSD License.
 Please see [`LICENSE`](./LICENSE.md) for more information.
 
 Maintained by [Yii Software](https://www.yiiframework.com/).

@@ -35,49 +35,45 @@ composer require yiisoft/auth-jwt
 
 1. Set JWT parameters in your `params.php` config file:
 
-```php
-'yiisoft/auth-jwt' => [
-    'algorithms' => [
-        // your signature algorithms
+    ```php
+    'yiisoft/auth-jwt' => [
+        'algorithms' => [
+            // your signature algorithms
+        ],
+        'serializers' => [
+            // your token serializers
+        ],
+        'key' => [
+            'secret' => 'your-secret',
+            'file' => 'your-certificate-file',
+        ],
     ],
-    'serializers' => [
-        // your token serializers
-    ],
-    'key' => [
-        'secret' => 'your-secret',
-        'file' => 'your-certificate-file',
-    ],
-],
-```
+    ```
 
 2. Setup definitions, required for `\Yiisoft\Auth\Middleware\Authentication` middleware in a config, for example,
    in `config/web/auth.php`:
 
-```php
-<?php
+    ```php
+    /** @var array $params */
 
-declare(strict_types=1);
+    use Yiisoft\Auth\Jwt\TokenManagerInterface;
+    use Yiisoft\Auth\Jwt\TokenManager;
+    use Yiisoft\Auth\AuthenticationMethodInterface;
+    use Yiisoft\Auth\Jwt\JwtMethod;
 
-/** @var array $params */
-
-use Yiisoft\Auth\Jwt\TokenManagerInterface;
-use Yiisoft\Auth\Jwt\TokenManager;
-use Yiisoft\Auth\AuthenticationMethodInterface;
-use Yiisoft\Auth\Jwt\JwtMethod;
-
-return [
-    KeyFactoryInterface::class => [
-        'class' => FromSecret::class,
-        '__construct()' => [
-            $params['yiisoft/auth-jwt']['key']['secret']
+    return [
+        KeyFactoryInterface::class => [
+            'class' => FromSecret::class,
+            '__construct()' => [
+                $params['yiisoft/auth-jwt']['key']['secret']
+            ],
         ],
-    ],
-    
-    AuthenticationMethodInterface::class => JwtMethod::class,
-];
-```
+        
+        AuthenticationMethodInterface::class => JwtMethod::class,
+    ];
+    ```
 
-> Note: Don't forget to declare your implementations of `\Yiisoft\Auth\IdentityInterface` and `\Yiisoft\Auth\IdentityRepositoryInterface`.
+    > Note: Don't forget to declare your implementations of `\Yiisoft\Auth\IdentityInterface` and `\Yiisoft\Auth\IdentityRepositoryInterface`.
 
 3. Use `Yiisoft\Auth\Middleware\Authentication` middleware.
    Read more about middlewares in the [middleware guide](https://github.com/yiisoft/docs/blob/master/guide/en/structure/middleware.md).

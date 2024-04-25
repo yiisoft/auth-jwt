@@ -72,7 +72,6 @@ composer require yiisoft/auth-jwt
         AuthenticationMethodInterface::class => JwtMethod::class,
     ];
     ```
-
     > Note: Don't forget to declare your implementations of `\Yiisoft\Auth\IdentityInterface` and `\Yiisoft\Auth\IdentityRepositoryInterface`.
 
 3. Use `Yiisoft\Auth\Middleware\Authentication` middleware.

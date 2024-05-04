@@ -23,7 +23,7 @@ The package provides [JWT authentication](https://tools.ietf.org/html/rfc7519) m
 
 ## Installation
 
-The package could be installed with composer:
+The package could be installed with [composer](https://getcomposer.org/download/)
 
 ```shell
 composer require yiisoft/auth-jwt

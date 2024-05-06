@@ -2,7 +2,8 @@
 
 ## 2.1.0 under development
 
-- Chg: #67: Bump required PHP version to 8.0 (@rustamwin)
+- Chg #67: Bump required PHP version to 8.0 (@rustamwin)
+- Enh #75: Add support for `psr/http-message` version `^2.0` (@vjik)
 
 ## 2.0.1 September 19, 2023
 

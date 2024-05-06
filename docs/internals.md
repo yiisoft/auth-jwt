@@ -37,7 +37,7 @@ use either newest or any specific version of PHP:
 ## Dependencies
 
 Use [ComposerRequireChecker](https://github.com/maglnet/ComposerRequireChecker) to detect transitive
-[Composer](https://getcomposer.org/) dependencies:
+[Composer](https://getcomposer.org) dependencies:
 
 ```shell
 ./vendor/bin/composer-require-checker

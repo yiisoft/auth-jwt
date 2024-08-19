@@ -15,7 +15,7 @@ use Yiisoft\Auth\Jwt\KeyFactoryInterface;
  */
 final class FromPKCS12CertificateFile implements KeyFactoryInterface
 {
-    public function __construct(private string $file, private string $secret)
+    public function __construct(private readonly string $file, private readonly string $secret)
     {
     }
 

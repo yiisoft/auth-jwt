@@ -15,7 +15,7 @@ use Yiisoft\Auth\Jwt\KeyFactoryInterface;
  */
 final class FromKeyFile implements KeyFactoryInterface
 {
-    public function __construct(private string $file, private string $password)
+    public function __construct(private readonly string $file, private readonly string $password)
     {
     }
 

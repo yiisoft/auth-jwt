@@ -19,7 +19,7 @@ The package provides [JWT authentication](https://tools.ietf.org/html/rfc7519) m
 
 ## Requirements
 
-- PHP 8.0 or higher.
+- PHP 8.1 or higher.
 
 ## Installation
 

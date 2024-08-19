@@ -8,7 +8,7 @@ use Yiisoft\Auth\IdentityInterface;
 
 final class FakeIdentity implements IdentityInterface
 {
-    public function __construct(private ?string $id)
+    public function __construct(private readonly ?string $id)
     {
     }
 

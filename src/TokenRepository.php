@@ -25,9 +25,9 @@ final class TokenRepository implements TokenRepositoryInterface
      * @see https://tools.ietf.org/html/rfc7515
      */
     public function __construct(
-        private KeyFactoryInterface $keyFactory,
-        private AlgorithmManager $algorithmManager,
-        private JWSSerializerManager $serializerManager
+        private readonly KeyFactoryInterface $keyFactory,
+        private readonly AlgorithmManager $algorithmManager,
+        private readonly JWSSerializerManager $serializerManager
     ) {
     }
 

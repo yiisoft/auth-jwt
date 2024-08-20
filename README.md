@@ -8,9 +8,8 @@
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/auth-jwt/v)](https://packagist.org/packages/yiisoft/auth-jwt)
 [![Total Downloads](https://poser.pugx.org/yiisoft/auth-jwt/downloads)](https://packagist.org/packages/yiisoft/auth-jwt)
-[![Build status](https://github.com/yiisoft/auth-jwt/workflows/build/badge.svg)](https://github.com/yiisoft/auth-jwt/actions)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiisoft/auth-jwt/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/auth-jwt/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/auth-jwt/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/auth-jwt/?branch=master)
+[![Build status](https://github.com/yiisoft/auth-jwt/actions/workflows/build.yml/badge.svg)](https://github.com/yiisoft/auth-jwt/actions/workflows/build.yml)
+[![Code Coverage](https://codecov.io/gh/yiisoft/auth-jwt/branch/master/graph/badge.svg)](https://codecov.io/gh/yiisoft/auth-jwt)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyiisoft%2Fauth-jwt%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yiisoft/auth-jwt/master)
 [![static analysis](https://github.com/yiisoft/auth-jwt/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/auth-jwt/actions?query=workflow%3A%22static+analysis%22)
 [![type-coverage](https://shepherd.dev/github/yiisoft/auth-jwt/coverage.svg)](https://shepherd.dev/github/yiisoft/auth-jwt)
@@ -74,7 +73,7 @@ composer require yiisoft/auth-jwt
     ];
     ```
 
-    > Note: Don't forget to declare your implementations of `\Yiisoft\Auth\IdentityInterface` and `\Yiisoft\Auth\IdentityRepositoryInterface`.
+   > Note: Don't forget to declare your implementations of `\Yiisoft\Auth\IdentityInterface` and `\Yiisoft\Auth\IdentityRepositoryInterface`.
 
 3. Use `Yiisoft\Auth\Middleware\Authentication` middleware.
    Read more about middlewares in the [middleware guide](https://github.com/yiisoft/docs/blob/master/guide/en/structure/middleware.md).

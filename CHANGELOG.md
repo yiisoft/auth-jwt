@@ -1,5 +1,9 @@
 # Yii Auth JWT Change Log
 
+## 2.0.3 under development
+
+- no changes in this release.
+
 ## 2.0.2 August 20, 2024
 
 - Chg #82: Replace `web-token/*` with `web-token/jwt-library` and update min version of PHP to 8.1 (@rustamwin)

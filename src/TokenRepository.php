@@ -10,6 +10,7 @@ use Jose\Component\Signature\JWS;
 use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Yiisoft\Json\Json;
+use InvalidArgumentException;
 
 /**
  * Token repository is getting a list of claims for a token.
@@ -27,15 +28,14 @@ final class TokenRepository implements TokenRepositoryInterface
     public function __construct(
         private readonly KeyFactoryInterface $keyFactory,
         private readonly AlgorithmManager $algorithmManager,
-        private readonly JWSSerializerManager $serializerManager
-    ) {
-    }
+        private readonly JWSSerializerManager $serializerManager,
+    ) {}
 
     public function getClaims(string $token, ?string &$format = null): ?array
     {
         try {
             $jws = $this->serializerManager->unserialize($token, $format);
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             return null;
         }
 

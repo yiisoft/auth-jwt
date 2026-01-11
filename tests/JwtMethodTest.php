@@ -21,7 +21,7 @@ class JwtMethodTest extends TestCase
         $tokenManager = $this->getTokenFactory();
         $token = $tokenManager->create($this->getPayload(), CompactSerializer::NAME);
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
-            $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
+            $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token]),
         );
 
         $this->assertNotNull($result);
@@ -35,7 +35,7 @@ class JwtMethodTest extends TestCase
         $payload = $this->getPayload();
         $token = $tokenManager->create($payload, CompactSerializer::NAME);
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
-            $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token])
+            $this->createRequest([Header::AUTHORIZATION => 'Bearer ' . $token]),
         );
 
         $this->assertNull($result);
@@ -50,7 +50,7 @@ class JwtMethodTest extends TestCase
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this
                 ->createRequest()
-                ->withQueryParams(['access-token' => $token])
+                ->withQueryParams(['access-token' => $token]),
         );
 
         $this->assertNotNull($result);
@@ -61,7 +61,7 @@ class JwtMethodTest extends TestCase
     {
         $identityRepository = new FakeIdentityRepository($this->createIdentity('111'));
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
-            $this->createRequest()
+            $this->createRequest(),
         );
 
         $this->assertNull($result);
@@ -75,7 +75,7 @@ class JwtMethodTest extends TestCase
         $result = (new JwtMethod($identityRepository, $this->getTokenRepository()))->authenticate(
             $this
                 ->createRequest()
-                ->withQueryParams(['access-token' => $token])
+                ->withQueryParams(['access-token' => $token]),
         );
 
         $this->assertNull($result);

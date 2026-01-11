@@ -49,7 +49,7 @@ final class JwtMethod implements AuthenticationMethodInterface
     public function __construct(
         private IdentityRepositoryInterface $identityRepository,
         private TokenRepositoryInterface $tokenRepository,
-        ?array $claimCheckers = null
+        ?array $claimCheckers = null,
     ) {
         $this->claimCheckers = $claimCheckers ?? [new ExpirationTimeChecker()];
     }
@@ -69,24 +69,7 @@ final class JwtMethod implements AuthenticationMethodInterface
         $this
             ->getClaimCheckerManager()
             ->check($claims);
-        return $this->identityRepository->findIdentity((string)$claims[$this->identifier]);
-    }
-
-    private function getAuthenticationToken(ServerRequestInterface $request): ?string
-    {
-        $authHeaders = $request->getHeader($this->headerName);
-        $authHeader = reset($authHeaders);
-        if (!empty($authHeader) && preg_match($this->headerTokenPattern, $authHeader, $matches)) {
-            return $matches[1];
-        }
-
-        $token = $request->getQueryParams()[$this->queryParameterName] ?? null;
-        return is_string($token) ? $token : null;
-    }
-
-    private function getClaimCheckerManager(): ClaimCheckerManager
-    {
-        return new ClaimCheckerManager($this->claimCheckers);
+        return $this->identityRepository->findIdentity((string) $claims[$this->identifier]);
     }
 
     public function challenge(ResponseInterface $response): ResponseInterface
@@ -153,5 +136,22 @@ final class JwtMethod implements AuthenticationMethodInterface
         $new = clone $this;
         $new->identifier = $identifier;
         return $new;
+    }
+
+    private function getAuthenticationToken(ServerRequestInterface $request): ?string
+    {
+        $authHeaders = $request->getHeader($this->headerName);
+        $authHeader = reset($authHeaders);
+        if (!empty($authHeader) && preg_match($this->headerTokenPattern, $authHeader, $matches)) {
+            return $matches[1];
+        }
+
+        $token = $request->getQueryParams()[$this->queryParameterName] ?? null;
+        return is_string($token) ? $token : null;
+    }
+
+    private function getClaimCheckerManager(): ClaimCheckerManager
+    {
+        return new ClaimCheckerManager($this->claimCheckers);
     }
 }

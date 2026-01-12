@@ -2,7 +2,7 @@
 
 ## 2.1.1 under development
 
-- no changes in this release.
+- Enh #87: Explicitly import classes in "use" section (@mspirkov)
 
 ## 2.1.0 August 20, 2024
 

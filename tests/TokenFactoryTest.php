@@ -36,7 +36,7 @@ class TokenFactoryTest extends TestCase
         $token = (new TokenFactory(
             new FromSecret(self::SECRET . 'wrong'),
             $this->getAlgorithmManager(),
-            $this->getSerializerManager()
+            $this->getSerializerManager(),
         ))->create($payload, CompactSerializer::NAME);
         $claims = $this->tokenRepository->getClaims($token);
         $this->assertNull($claims);

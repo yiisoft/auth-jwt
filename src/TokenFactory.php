@@ -24,9 +24,8 @@ final class TokenFactory implements TokenFactoryInterface
     public function __construct(
         private readonly KeyFactoryInterface $keyFactory,
         private readonly AlgorithmManager $algorithmManager,
-        private readonly JWSSerializerManager $serializerManager
-    ) {
-    }
+        private readonly JWSSerializerManager $serializerManager,
+    ) {}
 
     public function create(array $payload, string $format, ?int $signatureIndex = null): string
     {

@@ -15,9 +15,7 @@ use Yiisoft\Auth\Jwt\KeyFactoryInterface;
  */
 final class FromCertificateFile implements KeyFactoryInterface
 {
-    public function __construct(private readonly string $file)
-    {
-    }
+    public function __construct(private readonly string $file) {}
 
     public function create(array $additionalValues = []): JWK
     {

@@ -3,6 +3,7 @@
 ## 2.1.1 under development
 
 - Enh #87: Explicitly import classes in "use" section (@mspirkov)
+- Enh #88: Remove unnecessary files from Composer package (@mspirkov)
 
 ## 2.1.0 August 20, 2024
 

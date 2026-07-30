@@ -1,26 +1,25 @@
+name: mutation test
+
 on:
   pull_request:
-    paths-ignore:
-      - 'docs/**'
-      - 'README.md'
-      - 'CHANGELOG.md'
-      - '.gitignore'
-      - '.gitattributes'
-      - 'psalm.xml'
-
+    paths: &paths
+      - 'config/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'phpunit.xml.dist'
+      - 'infection.json.dist'
+      - 'composer.json'
+      - '.github/workflows/mutation.yml'
   push:
-    paths-ignore:
-      - 'docs/**'
-      - 'README.md'
-      - 'CHANGELOG.md'
-      - '.gitignore'
-      - '.gitattributes'
-      - 'psalm.xml'
-
-name: mutation test
+    branches: ['master']
+    paths: *paths
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   mutation:
@@ -29,6 +28,6 @@ jobs:
       os: >-
         ['ubuntu-latest']
       php: >-
-        ['8.3']
+        ['8.5']
     secrets:
       STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}

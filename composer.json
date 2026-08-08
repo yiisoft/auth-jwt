@@ -34,6 +34,7 @@
         "web-token/jwt-library": "^3.3",
         "yiisoft/auth": "^3.0",
         "yiisoft/http": "^1.2",
+        "yiisoft/injector": "^1.1",
         "yiisoft/json": "^1.0"
     },
     "require-dev": {
@@ -43,10 +44,10 @@
         "phpunit/phpunit": "^9.5",
         "rector/rector": "^2.0.0",
         "roave/infection-static-analysis-plugin": "^1.16",
+        "shipmonk/composer-dependency-analyser": "^1.8",
         "spatie/phpunit-watcher": "^1.23",
         "vimeo/psalm": "^5.26.1 || ^6.16.1",
-        "yiisoft/di": "^1.1",
-        "yiisoft/injector": "^1.1"
+        "yiisoft/di": "^1.1"
     },
     "autoload": {
         "psr-4": {
@@ -82,6 +83,7 @@
     },
     "scripts": {
         "test": "phpunit --testdox --no-interaction",
-        "test-watch": "phpunit-watcher watch"
+        "test-watch": "phpunit-watcher watch",
+        "dependency-analyser": "composer-dependency-analyser"
     }
 }

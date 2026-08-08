@@ -34,7 +34,6 @@
         "web-token/jwt-library": "^3.3",
         "yiisoft/auth": "^3.0",
         "yiisoft/http": "^1.2",
-        "yiisoft/injector": "^1.1",
         "yiisoft/json": "^1.0"
     },
     "require-dev": {
@@ -46,7 +45,8 @@
         "shipmonk/composer-dependency-analyser": "^1.8",
         "spatie/phpunit-watcher": "^1.23",
         "vimeo/psalm": "^5.26.1 || ^6.16.1",
-        "yiisoft/di": "^1.1"
+        "yiisoft/di": "^1.1",
+        "yiisoft/injector": "^1.1"
     },
     "autoload": {
         "psr-4": {

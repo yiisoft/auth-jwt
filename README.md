@@ -58,7 +58,7 @@ composer require yiisoft/auth-jwt
 
     use Yiisoft\Auth\Jwt\TokenManagerInterface;
     use Yiisoft\Auth\Jwt\TokenManager;
-    use Yiisoft\Auth\AuthenticationMethodInterface;
+    use Yiisoft\Auth\AuthenticatorWithChallengeInterface;
     use Yiisoft\Auth\Jwt\JwtMethod;
 
     return [
@@ -69,7 +69,7 @@ composer require yiisoft/auth-jwt
             ],
         ],
         
-        AuthenticationMethodInterface::class => JwtMethod::class,
+        AuthenticatorWithChallengeInterface::class => JwtMethod::class,
     ];
     ```
 

@@ -10,6 +10,7 @@ use Jose\Component\Checker\ExpirationTimeChecker;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Yiisoft\Auth\AuthenticationMethodInterface;
+use Yiisoft\Auth\AuthenticatorWithChallengeInterface;
 use Yiisoft\Auth\IdentityInterface;
 use Yiisoft\Auth\IdentityRepositoryInterface;
 use Yiisoft\Http\Header;
@@ -22,8 +23,10 @@ use function reset;
  *
  * @link https://tools.ietf.org/html/rfc7519
  * @link https://jwt.io/
+ *
+ * @psalm-suppress DeprecatedInterface
  */
-final class JwtMethod implements AuthenticationMethodInterface
+final class JwtMethod implements AuthenticationMethodInterface, AuthenticatorWithChallengeInterface
 {
     private string $headerName = Header::AUTHORIZATION;
     private string $queryParameterName = 'access-token';

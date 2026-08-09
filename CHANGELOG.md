@@ -2,6 +2,8 @@
 
 ## 2.1.1 under development
 
+- Enh #96: Raise `yiisoft/auth` dependency to `^3.3` and additionally implement `AuthenticatorWithChallengeInterface`
+  in `JwtMethod` (@vjik)
 - Enh #87: Explicitly import classes in "use" section (@mspirkov)
 - Enh #88: Remove unnecessary files from Composer package (@mspirkov)
 

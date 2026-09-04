@@ -76,7 +76,7 @@ composer require yiisoft/auth-jwt
    > Note: Don't forget to declare your implementations of `\Yiisoft\Auth\IdentityInterface` and `\Yiisoft\Auth\IdentityRepositoryInterface`.
 
 3. Use `Yiisoft\Auth\Middleware\Authentication` middleware.
-   Read more about middlewares in the [middleware guide](https://github.com/yiisoft/docs/blob/master/guide/en/structure/middleware.md).
+   Read more about middlewares in the [middleware guide](https://yiisoft.github.io/docs/guide/structure/middleware).
 
 ### Configuring independently
 
